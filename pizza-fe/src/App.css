@@ -1,0 +1,11 @@
+body {
+  padding: 20px 60px;
+}
+
+a {
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}

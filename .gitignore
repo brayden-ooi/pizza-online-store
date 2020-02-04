@@ -1,23 +1,26 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
-/.pnp
-.pnp.js
+/pizza-fe/node_modules
+/pizza-fe/.pnp
+/pizza-fe/.pnp.js
+/python3_env
+**/__pycache__
 
 # testing
-/coverage
+**/coverage
 
 # production
-/build
+**/build
 
 # misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.vscode
+/pizza-fe/.DS_Store
+/pizza-fe/.env.local
+/pizza-fe/.env.development.local
+/pizza-fe/.env.test.local
+/pizza-fe/.env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+/pizza-fe/npm-debug.log*
+/pizza-fe/yarn-debug.log*
+/pizza-fe/yarn-error.log*

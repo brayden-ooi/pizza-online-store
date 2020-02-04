@@ -1,0 +1,8 @@
+.jumbotron-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.jumbotron-text-content {
+  grid-column: 1;
+}
