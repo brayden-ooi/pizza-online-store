@@ -15,12 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from orders import views
-from django.conf.urls import url
 
 urlpatterns = [
+    path("", include("authentication.urls")),
+    path("", include("menu.urls")),
     path("", include("orders.urls")),
     path("admin/", admin.site.urls),
-    url(r"^api/menu/$", views.menu_list),
-    url(r"^api/menu/(?P<pk>[0-9]+)$", views.menu_details),
 ]
