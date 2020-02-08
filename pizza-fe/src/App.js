@@ -10,6 +10,7 @@ import ErrorBoundary from "./components/error-boundary/error-boundary.component"
 const HomePage = lazy(() => import("./pages/homepage/homepage.component"));
 const MenuPage = lazy(() => import("./pages/menu/menu.component"));
 const SignInPage = lazy(() => import("./pages/sign-in/sign-in.component"));
+const RegisterPage = lazy(() => import("./pages/register/register.component"));
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
             <Route exact path="/" component={HomePage} />
             <Route exact path="/menu" component={MenuPage} />
             <Route exact path="/signin" component={SignInPage} />
+            <Route path="/register" component={RegisterPage} />
           </Suspense>
         </ErrorBoundary>
       </Switch>
