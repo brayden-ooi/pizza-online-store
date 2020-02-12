@@ -5,11 +5,12 @@ import MenuItem from "../menu-item/menu-item.component";
 import { CardDeck } from "reactstrap";
 
 
-const MenuCollection = ({menu}) => {
+const MenuCollection = ({menuCollection}) => {
+  console.log(menuCollection)
   return (
     <CardDeck>
       {
-        menu.map(menuItem => <MenuItem />)
+        menuCollection.map(menuItem => <MenuItem menuItem={menuItem} id={menuItem.id} />)
       }
     </CardDeck>
 )};

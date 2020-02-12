@@ -8,9 +8,10 @@ const MenuPage = () => {
   useEffect(() => {
     // TODO
     async function fetchData() {
-      // let fetchMenu = await fetch("http://127.0.0.1:8000/api/menu/");
-      // let response = await fetchMenu.json();
-      await setMenuData([[1,2],[1,2],[1,2],[1,2],[1,2]]);
+      let fetchMenu = await fetch("http://localhost:8000/api/menu/");
+      let response = await fetchMenu.json();
+      await console.log(response);
+      await setMenuData(response);
     }
     fetchData();
   }, []);
@@ -19,7 +20,12 @@ const MenuPage = () => {
     <Suspense fallback={<span>I am loading the menu!</span>}>
       <main>
         {
-          menuData ? menuData.map(menu => <MenuCollection menu={menu} />) : ""
+          menuData ? Object.keys(menuData).map(menuCollection => 
+            <section>
+              <span>{ menuCollection }</span>
+              <MenuCollection menuCollection={menuData[menuCollection]} id={menuCollection} />
+            </section>
+          ) : ""
         }
       </main>
     </Suspense>

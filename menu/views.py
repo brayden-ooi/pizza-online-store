@@ -2,35 +2,49 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
-from .models import Pizza, Topping, Subs, SubsAddition, Pasta, Salad, DinnerPlatter
+from urllib.parse import unquote
+
+import menu.models
 
 
 @api_view()
 def menu_list(request):
-  data = Pizza.objects.all()
+  try:
+    food = {}
+    
+    for attr in dir(menu.models):
+      try:
+        food_model = getattr(menu.models, attr)
 
-  serializer = PizzaSerializer(data, context={'request': request}, many=True)
+        menu_item = food_model.objects.all()
+        serializer = food_model.get_serializer()
 
-  return Response(serializer.data)
+        data = serializer(menu_item, context={'request': request}, many=True)
+
+        food[attr] = data.data
+
+      except:
+        continue
+
+    return Response(food)
+  except:
+    return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view()
-def menu_details(request, food):
-  FOOD_MAP = {
-    "pasta": Pasta,
-    "pizza": Pizza,
-    "platter": DinnerPlatter,
-    "salad": Salad,
-    "subs": Subs,
-    "subs_addons": SubsAddition,
-    "toppings": Topping
-  }
-
+def menu_details(request, food_name):
   try:
-    menu_item = FOOD_MAP[food].objects.all()
+    food_model_name = unquote(food_name).title().replace(' ', '')
+    food_model = getattr(menu.models, food_model_name)
 
-    serializer = FOOD_MAP[food].get_serializer()
+    menu_item = food_model.objects.all()
+    serializer = food_model.get_serializer()
+
     data = serializer(menu_item, context={'request': request}, many=True)
 
-    return Response(data.data)
-  except Salad.DoesNotExist:
+    food = {}
+    food[food_model_name] = data.data
+
+    return Response(food)
+    
+  except:
     return Response(status=status.HTTP_404_NOT_FOUND)

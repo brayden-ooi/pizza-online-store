@@ -6,15 +6,15 @@ import {
 } from "reactstrap";
 
 
-const MenuItem = () => (
+const MenuItem = ({ menuItem }) => (
   <Card style={{ 
     flexGrow: "0",
     flexBasis: "auto"
   }}>
     <CardImg top width="100%" src="318x180.svg" alt="Card image cap" />
     <CardBody>
-      <CardTitle>Card title</CardTitle>
-      <CardSubtitle>Card subtitle</CardSubtitle>
+      <CardTitle>{ menuItem.food_name }</CardTitle>
+      <CardSubtitle>aaaaa</CardSubtitle>
       <CardText>foofofofofofofod</CardText>
       <Button>Button</Button>
     </CardBody>
