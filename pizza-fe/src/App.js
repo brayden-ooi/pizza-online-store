@@ -11,6 +11,7 @@ const HomePage = lazy(() => import("./pages/homepage/homepage.component"));
 const MenuPage = lazy(() => import("./pages/menu/menu.component"));
 const SignInPage = lazy(() => import("./pages/sign-in/sign-in.component"));
 const RegisterPage = lazy(() => import("./pages/register/register.component"));
+const CheckoutPage = lazy(() => import("./pages/checkout/checkout.component"));
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
             <Route exact path="/menu" component={MenuPage} />
             <Route exact path="/signin" component={SignInPage} />
             <Route path="/register" component={RegisterPage} />
+            <Route exact path="/checkout" component={CheckoutPage} />
           </Suspense>
         </ErrorBoundary>
       </Switch>

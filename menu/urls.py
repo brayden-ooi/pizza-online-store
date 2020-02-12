@@ -5,5 +5,5 @@ from . import views
 
 urlpatterns = [
     url(r"^api/menu/$", views.menu_list),
-    url(r"^api/menu/(?P<pk>[0-9]+)$", views.menu_details)
+    path("api/menu/<food>", views.menu_details)
 ]

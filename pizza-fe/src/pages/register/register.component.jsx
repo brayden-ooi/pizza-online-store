@@ -12,6 +12,9 @@ const RegisterPage = ({ match }) => {
     lastname: "",
     email: "", 
     address: "",
+    city: "",
+    state: "",
+    zipCode: "",
     password: "",
     passwordConfirm: ""
   });
