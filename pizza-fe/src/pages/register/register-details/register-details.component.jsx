@@ -3,7 +3,8 @@ import React from "react";
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 
-const RegisterDetails = ({ firstname, lastname, address, city, state, zipCode, handleChange, handleSubmit }) => (
+// TODO refactor
+const RegisterDetails = ({ first_name, last_name, address, city, state, zip_code, handleChange, handleSubmit }) => (
   <Form onSubmit={handleSubmit}>
     <Row form>
       <Col md={6}>
@@ -15,7 +16,7 @@ const RegisterDetails = ({ firstname, lastname, address, city, state, zipCode, h
             id="firstname"
             required 
 
-            value={ firstname }
+            value={ first_name }
             onChange={ handleChange }
           />
         </FormGroup>
@@ -29,7 +30,7 @@ const RegisterDetails = ({ firstname, lastname, address, city, state, zipCode, h
             id="lastname"
             required
 
-            value={ lastname }
+            value={ last_name }
             onChange={ handleChange }
           />
         </FormGroup>
@@ -91,7 +92,7 @@ const RegisterDetails = ({ firstname, lastname, address, city, state, zipCode, h
             placeholder="02128"
             required
 
-            value={ zipCode }
+            value={ zip_code }
             onChange={ handleChange } 
           />
         </FormGroup>  

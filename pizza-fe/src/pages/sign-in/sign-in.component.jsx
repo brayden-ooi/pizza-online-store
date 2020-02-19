@@ -1,33 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { userSignIn } from "../../providers/user/user.utils";
+import { UserContext } from "../../providers/user/user.provider";
+
+import { validationWarning } from "../../providers/user/user.utils";
+
+import { Button, Form, FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 
 
 const SignInPage = () => {
+  const { currentUser, getCurrentUser } = useContext(UserContext);
+
   const [ userCredentials, setCredentials ] = useState({ username: "", password: ""});
   const { username, password } = userCredentials;
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    // TODO
+    // reset warnings
+    await validationWarning(null);
+
     try {
-        const request = await fetch("http://127.0.0.1:8000/login", {
-        method: 'POST',
-        cache: 'no-cache',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          username,
-          password
-        })
-      });
-      const response = await request.json();
-      await console.log(response);
+      const response = await userSignIn({ username, password });
+      const user = response.isAuthenticated;
+
+      // reset fields
+      await setCredentials(userCredentials => user ? { username: "", password: ""} : userCredentials);
+      
+      await getCurrentUser(user);
     } catch(error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -59,9 +62,12 @@ const SignInPage = () => {
           id="password" 
           required 
 
+          invalid={ validationWarning(currentUser) }
+
           value={ password }
           onChange={ handleChange }
         />
+        <FormFeedback>Username or password is wrong. Please try again.</FormFeedback>
       </FormGroup>
       <Link to="/register">New user? Register here</Link>
       <Button>Sign in</Button>

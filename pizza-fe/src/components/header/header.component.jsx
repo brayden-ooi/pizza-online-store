@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { Link } from "react-router-dom";
 
-import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler, NavbarText } from "reactstrap";
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+
+import { UserContext } from "../../providers/user/user.provider";
+
+import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler } from "reactstrap";
 
 
 const Header = () => {
+  const { currentUser } = useContext(UserContext);
+
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleNavbar = () => setCollapsed(!collapsed);
@@ -27,7 +34,18 @@ const Header = () => {
               <NavLink href="/contact">Contact</NavLink>
             </NavItem>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          {
+            currentUser ? (
+              <div onClick={() => {}}>
+                Sign Out
+              </div>
+            ) : (
+              <Link to='/signin'>
+                Sign In
+              </Link>
+            )
+          }
+          <CartDropdown />
         </Collapse>
       </Navbar>
     </nav>

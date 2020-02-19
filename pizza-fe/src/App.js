@@ -1,11 +1,13 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
-
-import './App.css';
 
 import Header from "./components/header/header.component";
 import Footer from "./components/footer/footer.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
+
+import { UserContext } from "./providers/user/user.provider";
+
+import './App.css';
 
 const HomePage = lazy(() => import("./pages/homepage/homepage.component"));
 const MenuPage = lazy(() => import("./pages/menu/menu.component"));
@@ -15,6 +17,9 @@ const CheckoutPage = lazy(() => import("./pages/checkout/checkout.component"));
 
 
 function App() {
+  const { currentUser } = useContext(UserContext);
+  console.log(currentUser);
+
   return (
     <div>
       <Header />
@@ -23,9 +28,9 @@ function App() {
           <Suspense fallback={<div>I am loading!</div>}>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/menu" component={MenuPage} />
-            <Route exact path="/signin" component={SignInPage} />
-            <Route path="/register" component={RegisterPage} />
-            <Route exact path="/checkout" component={CheckoutPage} />
+            <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInPage />} />
+            <Route path="/register" render={() => currentUser ? <Redirect to="/" /> : <RegisterPage />} />
+            <Route exact path="/checkout" render={() => currentUser ? <CheckoutPage /> : <SignInPage />} />
           </Suspense>
         </ErrorBoundary>
       </Switch>

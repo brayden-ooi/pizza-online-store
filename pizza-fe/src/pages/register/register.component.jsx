@@ -1,42 +1,41 @@
-import React, { useState } from "react";
-import { Route, Redirect } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Route, Redirect, withRouter } from "react-router-dom";
 
 import RegisterMain from "./register-main/register-main.component";
 import RegisterDetails from "./register-details/register-details.component";
+
+import { UserContext } from "../../providers/user/user.provider";
+
+import { userRegister } from "../../providers/user/user.utils";
 
 
 const RegisterPage = ({ match }) => {
   const [ userCredentials, setCredentials ] = useState({ 
     username: "",
-    firstname: "",
-    lastname: "",
+    first_name: "",
+    last_name: "",
     email: "", 
+    password: "",
     address: "",
     city: "",
     state: "",
-    zipCode: "",
-    password: "",
+    zip_code: "",
     passwordConfirm: ""
   });
+
+  const { getCurrentUser } = useContext(UserContext);
+  const [ detailEntry, setDetailEntry ] = useState(false);
 
   const handleSubmit = async event => {
     event.preventDefault();
 
     // TODO
     try {
-        console.log(userCredentials);
-      //   const request = await fetch("http://127.0.0.1:8000/register", {
-      //   method: 'POST',
-      //   cache: 'no-cache',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   },
-      //   body: JSON.stringify({
-      //     userCredentials
-      //   })
-      // });
-      // const response = await request.json();
-      // await console.log(response);
+      const response = await userRegister(userCredentials);
+      
+      await setCredentials(null);
+
+      await getCurrentUser(response);
     } catch(error) {
       console.log(error);
     }
@@ -56,17 +55,19 @@ const RegisterPage = ({ match }) => {
           {...userCredentials} 
           history={history} 
           handleChange={handleChange} 
+          setDetailEntry={setDetailEntry}
         />} 
       />
-      <Route exact path={`${match.path}/details`} render={() => 
+      <Route exact path={`${match.path}/details`} render={() => detailEntry ? 
         <RegisterDetails 
           {...userCredentials} 
           handleChange={handleChange} 
           handleSubmit={handleSubmit} 
-        />} 
+        /> : 
+        <Redirect to="/register" />} 
       />
     </div>
   );
 };
 
-export default RegisterPage;
+export default withRouter(RegisterPage);

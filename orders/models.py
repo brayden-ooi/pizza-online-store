@@ -3,7 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 
 from menu.models import Pizza, Topping, Subs, SubsAddition
-from user.models import UserProfile
+from userdetails.models import UserProfile
 
 
 # https://docs.djangoproject.com/en/3.0/ref/contrib/contenttypes/
@@ -11,7 +11,7 @@ FALLBACK_CUSTOMER_ID = 1
 class Order(models.Model):
   time_ordered = models.DateTimeField(auto_now_add=True)
   total_price = models.DecimalField(max_digits=4, decimal_places=2)
-  customer = models.ForeignKey(UserProfile, related_name='order', on_delete=models.PROTECT, default=FALLBACK_CUSTOMER_ID)
+  customer = models.ForeignKey(UserProfile, related_name='order', on_delete=models.CASCADE, default=FALLBACK_CUSTOMER_ID)
 
 class OrderedFood(models.Model):
   order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items_ordered')

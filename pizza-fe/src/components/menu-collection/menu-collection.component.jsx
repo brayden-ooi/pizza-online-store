@@ -6,11 +6,10 @@ import { CardDeck } from "reactstrap";
 
 
 const MenuCollection = ({menuCollection}) => {
-  console.log(menuCollection)
   return (
     <CardDeck>
       {
-        menuCollection.map(menuItem => <MenuItem menuItem={menuItem} id={menuItem.id} />)
+        menuCollection.map(menuItem => <MenuItem menuItem={menuItem} key={menuItem.id} />)
       }
     </CardDeck>
 )};

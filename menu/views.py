@@ -1,17 +1,23 @@
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework import status
-
+import json
 from urllib.parse import unquote
+
+# from django.contrib.auth.decorators import login_required
+
+from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 import menu.models
 
 
 @api_view()
+@permission_classes([IsAuthenticated])
 def menu_list(request):
+  print(request.user)
+  
   try:
     food = {}
-    
     for attr in dir(menu.models):
       try:
         food_model = getattr(menu.models, attr)
@@ -31,7 +37,9 @@ def menu_list(request):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view()
+@permission_classes([IsAuthenticated])
 def menu_details(request, food_name):
+  print(request.user)
   try:
     food_model_name = unquote(food_name).title().replace(' ', '')
     food_model = getattr(menu.models, food_model_name)
@@ -48,3 +56,4 @@ def menu_details(request, food_name):
     
   except:
     return Response(status=status.HTTP_404_NOT_FOUND)
+  

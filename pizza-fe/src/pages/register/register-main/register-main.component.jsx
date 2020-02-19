@@ -6,7 +6,7 @@ import { validateUsernameAndEmail } from "../register.utils";
 import { Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
 
 
-const RegisterMain = ({ path, history, handleChange, username, email, password, passwordConfirm }) => {
+const RegisterMain = ({ path, history, handleChange, username, email, password, passwordConfirm, setDetailEntry }) => {
   const [validationStatus, setValidationStatus] = useState({
     emailRejected: null,
     usernameRejected: null,
@@ -18,6 +18,7 @@ const RegisterMain = ({ path, history, handleChange, username, email, password, 
 
   useEffect(() => {
     if (Object.values(validationStatus).every(result => result !== null && !result)) {
+      setDetailEntry(true);
       history.push(`${path}/details`);
     }
   }, [validationStatus]);
@@ -25,18 +26,19 @@ const RegisterMain = ({ path, history, handleChange, username, email, password, 
   const handleFirstPortion = async e => {
     e.preventDefault();
 
+    // form reset to clean out prior errors
     await setValidationStatus(validationStatus => {
       Object.keys(validationStatus).forEach(key => validationStatus[key] = null);
       return validationStatus;
     });
 
-    const { usernameValidated, emailValidated } = await validateUsernameAndEmail(username, email);
+    const { rejectedUsername, rejectedEmail } = await validateUsernameAndEmail(username, email);
 
     await setValidationStatus({
-      emailRejected: !usernameValidated,
-      usernameRejected: !emailValidated,
+      emailRejected: rejectedEmail,
+      usernamRejected: rejectedUsername,
       passwordLengthRejected: password.length < 6,
-      passwordRejected: password === passwordConfirm ? false : true
+      passwordRejected: !(password === passwordConfirm)
     });
   }
 
