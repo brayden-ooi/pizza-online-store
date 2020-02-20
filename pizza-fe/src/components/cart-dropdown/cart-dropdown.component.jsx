@@ -29,7 +29,7 @@ const CartDropdown = ({ history }) => {
         </div>
       <DropdownItem divider />
       <DropdownItem>
-        <Button
+        <Button tag="div"
           onClick={() => {
             history.push('/checkout');
             toggle();

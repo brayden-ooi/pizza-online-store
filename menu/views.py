@@ -7,11 +7,13 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from django.contrib.auth.decorators import login_required
 
 import menu.models
 
 
 @api_view()
+# @login_required
 @permission_classes([IsAuthenticated])
 def menu_list(request):
   print(request.user)

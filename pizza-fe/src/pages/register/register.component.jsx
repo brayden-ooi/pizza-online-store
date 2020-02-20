@@ -1,30 +1,59 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useReducer, useContext } from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
 
 import RegisterMain from "./register-main/register-main.component";
 import RegisterDetails from "./register-details/register-details.component";
 
+import { formReducer } from "../../components/form-input/form.utils";
+import { userRegister } from "../../providers/user/user.utils";
 import { UserContext } from "../../providers/user/user.provider";
 
-import { userRegister } from "../../providers/user/user.utils";
 
-
-const RegisterPage = ({ match }) => {
-  const [ userCredentials, setCredentials ] = useState({ 
-    username: "",
-    first_name: "",
-    last_name: "",
+const INITIAL_STATE = { 
+  mainPage: {
+    username: "", 
     email: "", 
     password: "",
-    address: "",
-    city: "",
-    state: "",
-    zip_code: "",
-    passwordConfirm: ""
-  });
+    passwordConfirm: "",
+  },
+  detailPage: {
+    fullName: {
+      first_name: "",
+      last_name: ""
+    },
+    fullAddress: {
+      address: "",
+      city: "",
+      state: "",
+      zip_code: ""
+    }
+  },
+  validationStatus: null
+};
 
-  const { getCurrentUser } = useContext(UserContext);
+const RegisterPageReducer = formReducer(INITIAL_STATE);
+
+const RegisterPage = ({ match }) => {
+  const { userDispatch } = useContext(UserContext);
+  const [ formState, formDispatch ] = useReducer(RegisterPageReducer, INITIAL_STATE);
   const [ detailEntry, setDetailEntry ] = useState(false);
+
+  const { mainPage, detailPage } = formState;
+
+
+
+  // const [ userCredentials, setCredentials ] = useState({ 
+  //   username: "",
+  //   first_name: "",
+  //   last_name: "",
+  //   email: "", 
+  //   password: "",
+  //   address: "",
+  //   city: "",
+  //   state: "",
+  //   zip_code: "",
+  //   passwordConfirm: ""
+  // });
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -35,33 +64,25 @@ const RegisterPage = ({ match }) => {
       
       await setCredentials(null);
 
-      await getCurrentUser(response);
+      await userDispatch({ type: "REGISTER_USER", payload: response });
     } catch(error) {
       console.log(error);
     }
   };
-
-  const handleChange = e => {
-    const { value, name } = e.target;
-
-    setCredentials({ ...userCredentials, [name]: value });
-  }
 
   return (
     <div>
       <Route exact path={match.path} render={({ match: {path}, history }) => 
         <RegisterMain 
           path={path} 
-          {...userCredentials} 
+          fields={mainPage} 
           history={history} 
-          handleChange={handleChange} 
           setDetailEntry={setDetailEntry}
         />} 
       />
       <Route exact path={`${match.path}/details`} render={() => detailEntry ? 
         <RegisterDetails 
-          {...userCredentials} 
-          handleChange={handleChange} 
+          {...detailPage} 
           handleSubmit={handleSubmit} 
         /> : 
         <Redirect to="/register" />} 

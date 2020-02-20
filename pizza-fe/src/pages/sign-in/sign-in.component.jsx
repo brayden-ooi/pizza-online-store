@@ -1,44 +1,38 @@
-import React, { useState, useContext } from "react";
+import React, { useReducer, useContext } from "react";
 import { Link } from "react-router-dom";
 
+import { formReducer } from "../../components/form-input/form.utils";
 import { userSignIn } from "../../providers/user/user.utils";
 import { UserContext } from "../../providers/user/user.provider";
-
-import { validationWarning } from "../../providers/user/user.utils";
 
 import { Button, Form, FormGroup, FormFeedback, Label, Input } from 'reactstrap';
 
 
-const SignInPage = () => {
-  const { currentUser, getCurrentUser } = useContext(UserContext);
+const INITIAL_STATE = { username: "", password: "", validationStatus: null};
 
-  const [ userCredentials, setCredentials ] = useState({ username: "", password: ""});
-  const { username, password } = userCredentials;
+const LoginPageReducer = formReducer(INITIAL_STATE);
+
+const SignInPage = () => {
+  const { userDispatch } = useContext(UserContext);
+  const [ formState, formDispatch ] = useReducer(LoginPageReducer, INITIAL_STATE);
+  const { username, password, validationStatus } = formState;
 
   const handleSubmit = async event => {
     event.preventDefault();
 
-    // reset warnings
-    await validationWarning(null);
+    formDispatch({ type: "SUBMIT_START" });
 
     try {
       const response = await userSignIn({ username, password });
-      const user = response.isAuthenticated;
 
-      // reset fields
-      await setCredentials(userCredentials => user ? { username: "", password: ""} : userCredentials);
-      
-      await getCurrentUser(user);
+      await (function() {
+        formDispatch({ type: "SUBMIT_SUCCESS" });
+        userDispatch({ type: "LOGIN_USER", payload: response });
+      })();
     } catch(error) {
       console.error(error);
     }
   };
-
-  const handleChange = e => {
-    const { value, name } = e.target;
-
-    setCredentials({ ...userCredentials, [name]: value });
-  }
 
   return (
     <Form onSubmit={ handleSubmit }>
@@ -51,7 +45,7 @@ const SignInPage = () => {
           required 
 
           value={ username }
-          onChange={ handleChange }
+          onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
         />
       </FormGroup>
       <FormGroup>
@@ -62,10 +56,10 @@ const SignInPage = () => {
           id="password" 
           required 
 
-          invalid={ validationWarning(currentUser) }
+          invalid={ validationStatus }
 
           value={ password }
-          onChange={ handleChange }
+          onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
         />
         <FormFeedback>Username or password is wrong. Please try again.</FormFeedback>
       </FormGroup>

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+import FormInput from "../../../components/form-input/form-input.component";
+
 import { validateUsernameAndEmail } from "../register.utils";
 
-import { Button, Form, FormGroup, Label, Input, FormFeedback } from 'reactstrap';
+import { Button, Form, FormFeedback } from 'reactstrap';
 
 
-const RegisterMain = ({ path, history, handleChange, username, email, password, passwordConfirm, setDetailEntry }) => {
+const RegisterMain = ({ path, history, mainPage, setDetailEntry }) => {
+  const { username, email, password, passwordConfirm } = mainPage;
+
   const [validationStatus, setValidationStatus] = useState({
     emailRejected: null,
     usernameRejected: null,
@@ -45,69 +49,51 @@ const RegisterMain = ({ path, history, handleChange, username, email, password, 
   return (
     <div>
       <Form onSubmit={handleFirstPortion}>
-        <FormGroup>
-          <Label for="username">Username</Label>
-          <Input 
-            type="text" 
-            name="username" 
-            id="username" 
-            required 
-            placeholder="John"
+        <FormInput
+          name="username"
+          placeholder="John"
+          invalid={ usernameRejected }
 
-            invalid={ usernameRejected }
-
-            value={ username }
-            onChange={ handleChange }
-          />
+          value={ username }
+          onChange={ handleChange }
+        >
           <FormFeedback>Username taken. Please try another one.</FormFeedback>
-        </FormGroup>
+        </FormInput>
 
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input 
-            type="email" 
-            name="email" 
-            id="email" 
-            required
-            placeholder="John@hotmail.com"
-            invalid={ emailRejected }
-            
-            value={ email }
-            onChange={ handleChange }
-          />
-          <FormFeedback>
-            Email registered. <Link to="/login">Login here</Link>
-          </FormFeedback>
-        </FormGroup>
+        <FormInput 
+          name="email"
+          type="email"
+          placeholder="John@hotmail.com"
+          invalid={ emailRejected }
 
-        <FormGroup>
-          <Label for="password">Password</Label>
-          <Input 
-            type="password" 
-            name="password" 
-            id="password" 
-            required
-            invalid={ passwordLengthRejected }
-            
-            value={ password }
-            onChange={ handleChange } 
-          />
+          value={ email }
+          onChange={ handleChange }
+        >
+          <FormFeedback>Email registered. <Link to="/login">Login here</Link></FormFeedback>
+        </FormInput>
+
+        <FormInput 
+          name="password"
+          type="password"
+          invalid={ passwordLengthRejected }
+
+          value={ password }
+          onChange={ handleChange } 
+        >
           <FormFeedback>Password must be more than six characters.</FormFeedback>
-        </FormGroup>
-        <FormGroup>
-          <Label for="password-confirm">Confirm Password</Label>
-          <Input 
-            type="password" 
-            name="passwordConfirm" 
-            id="password-confirm"
-            required
-            invalid={ passwordRejected }
-            
-            value={ passwordConfirm }
-            onChange={ handleChange } 
-          />
+        </FormInput>
+
+        <FormInput 
+          name="passwordConfirm"
+          label="Confirm Password"
+          type="password"
+          invalid={ passwordRejected }
+
+          value={ passwordConfirm }
+          onChange={ handleChange } 
+        >
           <FormFeedback>Passwords do not match.</FormFeedback>
-        </FormGroup>
+        </FormInput>
 
         <Button color="primary">Next</Button>
       </Form>

@@ -3,7 +3,6 @@ const API_HOST = "http://127.0.0.1:8000/api/";
 const userHandle = path => async userCredentials => {
   const request = await fetch(`${API_HOST}${path}`, {
     method: 'POST',
-    cache: 'no-cache',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
@@ -22,8 +21,6 @@ export const userSignIn = userHandle("login");
 
 export const userRegister = userHandle("register");
 
-export const validationWarning = (validationStatus = null) => validationStatus == null ? null : !validationStatus;
-
 // https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 export const getCSRFToken = async () => {
   if (document.cookie && document.cookie !== "") {
@@ -32,6 +29,7 @@ export const getCSRFToken = async () => {
       if (cookie.trim().substring(0, 10) === 'csrftoken=') {
         return decodeURIComponent(cookie.trim().substring(10));
       }
+      return false;
     });
   } else {
     const response = await fetch(`${API_HOST}csrf`, {
@@ -42,4 +40,14 @@ export const getCSRFToken = async () => {
 
     return _csrfToken;
   }
-}
+};
+
+export const addToken = token => {
+  window.localStorage.setItem("token", token);
+  return token;
+};
+
+export const removeToken = () => {
+  window.localStorage.removeItem("token");
+  return null;
+};

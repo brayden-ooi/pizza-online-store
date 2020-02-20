@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useContext } from 'react';
+import React, { lazy, Suspense, useContext, useEffect } from 'react';
 import { Switch, Route, Redirect } from "react-router-dom";
 
 import Header from "./components/header/header.component";
@@ -6,6 +6,8 @@ import Footer from "./components/footer/footer.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 
 import { UserContext } from "./providers/user/user.provider";
+
+import { getCSRFToken } from "./providers/user/user.utils";
 
 import './App.css';
 
@@ -17,8 +19,29 @@ const CheckoutPage = lazy(() => import("./pages/checkout/checkout.component"));
 
 
 function App() {
-  const { currentUser } = useContext(UserContext);
-  console.log(currentUser);
+  const { userState } = useContext(UserContext);
+
+  useEffect(() => {
+
+    // if (token) {
+    //   const fetchData = async () => {
+    //     const fetchUserStatus = await fetch("http://localhost:8000/api/userstatus", {
+    //       credentials: 'include',
+    //       headers: {
+    //         'Authorization': `Token ${token}`,
+    //         'Content-Type': 'application/json',
+    //         'X-CSRFToken': await getCSRFToken()
+    //       },
+    //     }
+    //     );
+    //     const response = await fetchUserStatus.json();
+    //     await getCurrentUser(response || null);
+    //   };
+  
+    //   fetchData();
+    // }
+  }, []);
+  
 
   return (
     <div>
@@ -28,9 +51,9 @@ function App() {
           <Suspense fallback={<div>I am loading!</div>}>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/menu" component={MenuPage} />
-            <Route exact path="/signin" render={() => currentUser ? <Redirect to="/" /> : <SignInPage />} />
-            <Route path="/register" render={() => currentUser ? <Redirect to="/" /> : <RegisterPage />} />
-            <Route exact path="/checkout" render={() => currentUser ? <CheckoutPage /> : <SignInPage />} />
+            <Route exact path="/signin" render={() => userState ? <Redirect to="/" /> : <SignInPage />} />
+            <Route path="/register" render={() => userState ? <Redirect to="/" /> : <RegisterPage />} />
+            <Route exact path="/checkout" render={() => userState ? <CheckoutPage /> : <Redirect to="/signin" />} />
           </Suspense>
         </ErrorBoundary>
       </Switch>

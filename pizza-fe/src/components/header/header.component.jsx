@@ -9,10 +9,9 @@ import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavLink, NavbarToggler } f
 
 
 const Header = () => {
-  const { currentUser } = useContext(UserContext);
+  const { userState, userDispatch } = useContext(UserContext);
 
   const [collapsed, setCollapsed] = useState(true);
-
   const toggleNavbar = () => setCollapsed(!collapsed);
   
   return (
@@ -35,8 +34,8 @@ const Header = () => {
             </NavItem>
           </Nav>
           {
-            currentUser ? (
-              <div onClick={() => {}}>
+            userState ? (
+              <div onClick={() => userDispatch({ type: "LOGOUT_USER" })}>
                 Sign Out
               </div>
             ) : (

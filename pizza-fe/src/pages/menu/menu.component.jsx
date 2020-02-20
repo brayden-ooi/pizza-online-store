@@ -10,16 +10,20 @@ const MenuPage = () => {
   
   useEffect(() => {
     const fetchData = async () => {
-      let fetchMenu = await fetch("http://localhost:8000/api/menu/", {
-        headers: {'X-CSRFToken': await getCSRFToken()},
+      const fetchMenu = await fetch("http://localhost:8000/api/menu/", {
         credentials: 'include',
-
+        headers: {
+          'Authorization': 'Token 0fb57f50eff6113288937be4a8d15fbadaf62b70',
+          'Content-Type': 'application/json',
+          'X-CSRFToken': await getCSRFToken()
+        },
       });
-      let response = await fetchMenu.json();
+      const response = await fetchMenu.json();
       await setMenuData(response);
     };
 
-    fetchData()}, []);
+    fetchData();
+  }, []);
 
   return (
     <main>

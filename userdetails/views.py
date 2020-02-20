@@ -4,6 +4,7 @@ from django.core import serializers
 from django.middleware.csrf import get_token
 from django.http import JsonResponse
 
+from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
@@ -19,15 +20,17 @@ def api_login(request):
 		login(request, user)
 
 		serializer = UserSerializer(user, context={'request': request})
+		token = Token.objects.get(user=user)
 
-		return Response({ "isAuthenticated": serializer.data })
+		return Response({ "user": serializer.data, "token": token.key })
 	else:
-		return Response({ "isAuthenticated": False })
+		return Response(False)
 
 @api_view()
 def api_logout(request):
+	del request.session
 	logout(request)
-	return Response({ "isAuthenticated": False })
+	return Response(False)
 
 @api_view(['GET', 'POST'])
 def api_register(request):
@@ -47,10 +50,11 @@ def api_register(request):
 		new_user_profile.save()
 
 		login(request, new_user)
-
+		
 		serializer = UserSerializer(new_user, context={'request': request})
+		token = Token.objects.get(user=user)
 
-		return Response(serializer.data, status=status.HTTP_201_CREATED)
+		return Response({ "user": serializer.data, "token": token.key }, status=status.HTTP_201_CREATED)
 	except:
 		return Response(serializer.errors, status=status.HTTP_201_CREATED)
 
@@ -67,10 +71,11 @@ def api_validate(request):
 def csrf(request):
 	return JsonResponse({'csrfToken': get_token(request)})
 
-# def user_view():
-#     if not request.user.is_authenticated:
-#       return render(request, "users/login.html", {"message": None})
-#     context = {
-#         "user": request.user
-#     }
-#     return render(request, "users/user.html", context)
+@api_view()
+def user_current_status(request):
+	if request.user.is_authenticated:
+		print(request.user)
+		serializer = UserSerializer(request.user, context={'request': request})
+
+		return Response(serializer.data)
+	return Response(False)

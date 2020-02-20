@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'userdetails.apps.UserdetailsConfig',
-    # 'rest_framework.authtoken',
+    'rest_framework.authtoken',
     'menu.apps.MenuConfig',
     'orders.apps.OrdersConfig',
     'django.contrib.admin',
@@ -59,9 +59,9 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000', 'http://127.0.0.1:3000']
+CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 
-CSRF_TRUSTED_ORIGINS = ['http://localhost:3000', 'http://127.0.0.1:3000/']
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
 
 ROOT_URLCONF = 'pizza.urls'
 
@@ -136,7 +136,6 @@ STATIC_URL = '/static/'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
     ]
 }
-
