@@ -1,6 +1,7 @@
 import React, { useState, useReducer, useContext } from "react";
-import { Route, Redirect, withRouter } from "react-router-dom";
+import { Route, useRouteMatch } from "react-router-dom";
 
+import PrivateRoute from "../../components/private-route/private-route.component";
 import RegisterMain from "./register-main/register-main.component";
 import RegisterDetails from "./register-details/register-details.component";
 
@@ -8,6 +9,13 @@ import { formReducer } from "../../components/form-input/form.utils";
 import { userRegister } from "../../providers/user/user.utils";
 import { UserContext } from "../../providers/user/user.provider";
 
+
+const INITIAL_REGISTER_VALIDATION = {
+  email: null, 
+  username: null,
+  passwordLength: null,
+  passwordConfirm: null
+};
 
 const INITIAL_STATE = { 
   mainPage: {
@@ -28,19 +36,16 @@ const INITIAL_STATE = {
       zip_code: ""
     }
   },
-  validationStatus: null
+  validationStatus: INITIAL_REGISTER_VALIDATION
 };
 
-const RegisterPageReducer = formReducer(INITIAL_STATE);
+const RegisterPageReducer = formReducer(INITIAL_STATE, INITIAL_REGISTER_VALIDATION);
 
-const RegisterPage = ({ match }) => {
+const RegisterPage = () => {
+  const { path } = useRouteMatch();
   const { userDispatch } = useContext(UserContext);
   const [ formState, formDispatch ] = useReducer(RegisterPageReducer, INITIAL_STATE);
   const [ detailEntry, setDetailEntry ] = useState(false);
-
-  const { mainPage, detailPage } = formState;
-
-
 
   // const [ userCredentials, setCredentials ] = useState({ 
   //   username: "",
@@ -58,13 +63,17 @@ const RegisterPage = ({ match }) => {
   const handleSubmit = async event => {
     event.preventDefault();
 
-    // TODO
-    try {
-      const response = await userRegister(userCredentials);
-      
-      await setCredentials(null);
+    formDispatch({ type: "SUBMIT_START" });
 
-      await userDispatch({ type: "REGISTER_USER", payload: response });
+    try {
+      const response = await userRegister(formState);
+      
+      await formDispatch({ type: "SUBMIT__RESULT", payload: response });
+
+      await (() => response && (
+        formDispatch({ type: "SUBMIT_SUCCESS" }) ||
+        userDispatch({ type: "REGISTER_USER", payload: response })
+      ))();
     } catch(error) {
       console.log(error);
     }
@@ -72,23 +81,25 @@ const RegisterPage = ({ match }) => {
 
   return (
     <div>
-      <Route exact path={match.path} render={({ match: {path}, history }) => 
+      <Route exact path={path}>
         <RegisterMain 
-          path={path} 
-          fields={mainPage} 
-          history={history} 
+          {...formState} 
           setDetailEntry={setDetailEntry}
-        />} 
-      />
-      <Route exact path={`${match.path}/details`} render={() => detailEntry ? 
+          formDispatch={formDispatch}
+        />
+      </Route>
+      <PrivateRoute exact path={`${path}/details`} 
+        condition={detailEntry} 
+        deniedPath="/register"
+      >
         <RegisterDetails 
-          {...detailPage} 
+          {...formState} 
           handleSubmit={handleSubmit} 
-        /> : 
-        <Redirect to="/register" />} 
-      />
+          formDispatch={formDispatch}
+        />
+      </PrivateRoute>
     </div>
   );
 };
 
-export default withRouter(RegisterPage);
+export default RegisterPage;

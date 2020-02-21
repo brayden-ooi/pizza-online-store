@@ -1,6 +1,3 @@
-// Client-side validation
-// TODO
-
 export const validateUsernameAndEmail = async (username, email) => {
   try {
     const request = await fetch("http://127.0.0.1:8000/api/register/validate", {
@@ -20,4 +17,4 @@ export const validateUsernameAndEmail = async (username, email) => {
   } catch(error) {
     console.log(error);
   }
-}
+};

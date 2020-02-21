@@ -1,14 +1,17 @@
 import React, { useReducer, useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { formReducer } from "../../components/form-input/form.utils";
-import { userSignIn } from "../../providers/user/user.utils";
+import FormInput from "../../components/form-input/form-input.component";
+
 import { UserContext } from "../../providers/user/user.provider";
 
-import { Button, Form, FormGroup, FormFeedback, Label, Input } from 'reactstrap';
+import { formReducer } from "../../components/form-input/form.utils";
+import { userSignIn } from "../../providers/user/user.utils";
+
+import { Button, Form, FormFeedback } from 'reactstrap';
 
 
-const INITIAL_STATE = { username: "", password: "", validationStatus: null};
+const INITIAL_STATE = { username: "", password: "", validationStatus: null };
 
 const LoginPageReducer = formReducer(INITIAL_STATE);
 
@@ -25,10 +28,12 @@ const SignInPage = () => {
     try {
       const response = await userSignIn({ username, password });
 
-      await (function() {
-        formDispatch({ type: "SUBMIT_SUCCESS" });
-        userDispatch({ type: "LOGIN_USER", payload: response });
-      })();
+      await formDispatch({ type: "SUBMIT__RESULT", payload: response });
+
+      await (() => response && (
+        formDispatch({ type: "SUBMIT_SUCCESS" }) ||
+        userDispatch({ type: "LOGIN_USER", payload: response })
+      ))();
     } catch(error) {
       console.error(error);
     }
@@ -36,33 +41,24 @@ const SignInPage = () => {
 
   return (
     <Form onSubmit={ handleSubmit }>
-      <FormGroup>
-        <Label for="username">Username</Label>
-        <Input 
-          type="text" 
-          name="username" 
-          id="username" 
-          required 
+      <FormInput
+        name="username"
 
-          value={ username }
-          onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
-        />
-      </FormGroup>
-      <FormGroup>
-        <Label for="password">Password</Label>
-        <Input 
-          type="password" 
-          name="password" 
-          id="password" 
-          required 
+        value={ username }
+        onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
+      />
 
-          invalid={ validationStatus }
+      <FormInput
+        name="password"
+        type="password"
 
-          value={ password }
-          onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
-        />
+        invalid={ validationStatus }
+
+        value={ password }
+        onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
+      >
         <FormFeedback>Username or password is wrong. Please try again.</FormFeedback>
-      </FormGroup>
+      </FormInput>
       <Link to="/register">New user? Register here</Link>
       <Button>Sign in</Button>
     </Form>

@@ -1,11 +1,23 @@
-const validationWarning = (validationStatus = null) => validationStatus == null ? null : !validationStatus;
+const validationWarning = (validationStatus = null) => {
+  if (validationStatus == null) {
+    return null;
+  } else if (typeof validationStatus == "object") {
+    return Object.keys(validationStatus).reduce((currentValidationStatus, currentKey) => ({
+      ...currentValidationStatus,
+      [currentKey]: validationWarning(validationStatus[currentKey])
+    }), {});
+  } else if (typeof validationStatus == "string") {
+    return !validationStatus;
+  }
+};
 
-export const formReducer = INITIAL_STATE => (state, action) => {
+export const formReducer = (INITIAL_STATE, validationDefault = null) => (state, action) => {
   switch (action.type) {
+    // also serves as warning reset
     case "SUBMIT_START":
       return {
         ...state,
-        validationStatus: null
+        validationStatus: validationDefault
       };
     case "FORM_CHANGE":
       return {

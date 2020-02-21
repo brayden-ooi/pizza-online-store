@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 import FormInput from "../../../components/form-input/form-input.component";
 
@@ -8,47 +8,49 @@ import { validateUsernameAndEmail } from "../register.utils";
 import { Button, Form, FormFeedback } from 'reactstrap';
 
 
-const RegisterMain = ({ path, history, mainPage, setDetailEntry }) => {
+const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) => {
+  const history = useHistory();
+  const { path } = useRouteMatch();
   const { username, email, password, passwordConfirm } = mainPage;
-
-  const [validationStatus, setValidationStatus] = useState({
-    emailRejected: null,
-    usernameRejected: null,
-    passwordLengthRejected: null,
-    passwordRejected: null
+  const { emailRejected, usernameRejected, passwordLengthRejected, passwordRejected } = validation;
+  
+  const handleChange = event => ({
+    name: "mainPage",
+    value: { 
+      ...mainPage, 
+      [event.target.name]: event.target.value
+      }
   });
 
-  const { emailRejected, usernameRejected, passwordLengthRejected, passwordRejected } = validationStatus;
-
-  useEffect(() => {
-    if (Object.values(validationStatus).every(result => result !== null && !result)) {
-      setDetailEntry(true);
-      history.push(`${path}/details`);
-    }
-  }, [validationStatus]);
-
-  const handleFirstPortion = async e => {
+  const handleMain = async e => {
     e.preventDefault();
 
-    // form reset to clean out prior errors
-    await setValidationStatus(validationStatus => {
-      Object.keys(validationStatus).forEach(key => validationStatus[key] = null);
-      return validationStatus;
-    });
+    formDispatch({ type: "SUBMIT_START" });
 
-    const { rejectedUsername, rejectedEmail } = await validateUsernameAndEmail(username, email);
+    try {
+      const { rejectUsername, rejectEmail } = await validateUsernameAndEmail(username, email);
 
-    await setValidationStatus({
-      emailRejected: rejectedEmail,
-      usernamRejected: rejectedUsername,
-      passwordLengthRejected: password.length < 6,
-      passwordRejected: !(password === passwordConfirm)
-    });
-  }
+      await formDispatch({ type: "SUBMIT__RESULT", payload: {
+        email: !rejectEmail, // raise error if server decided to reject
+        username: !rejectUsername, // same
+        passwordLength: password.length > 5,
+        passwordConfirm: (password === passwordConfirm)
+      }});
+
+      await (() => {
+        if (Object.values(validation).every(result => result !== null && !result)) {
+          setDetailEntry(true);
+          history.push(`${path}/details`);
+        }
+      })();
+    } catch(error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
-      <Form onSubmit={handleFirstPortion}>
+      <Form onSubmit={handleMain}>
         <FormInput
           name="username"
           placeholder="John"

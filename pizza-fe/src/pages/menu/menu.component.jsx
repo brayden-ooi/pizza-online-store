@@ -1,29 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import MenuCollection from "../../components/menu-collection/menu-collection.component";
 
-import { getCSRFToken } from "../../providers/user/user.utils";
+import MenuContext, { fetchMenu } from "../../context/menu/menu.context";
 
 
 const MenuPage = () => {
+  const menu = useContext(MenuContext);
   const [menuData, setMenuData] = useState(null);
   
-  useEffect(() => {
-    const fetchData = async () => {
-      const fetchMenu = await fetch("http://localhost:8000/api/menu/", {
-        credentials: 'include',
-        headers: {
-          'Authorization': 'Token 0fb57f50eff6113288937be4a8d15fbadaf62b70',
-          'Content-Type': 'application/json',
-          'X-CSRFToken': await getCSRFToken()
-        },
-      });
-      const response = await fetchMenu.json();
-      await setMenuData(response);
-    };
-
-    fetchData();
-  }, []);
+  useEffect(() => (() => {
+    // fetchMenu.then(response => setMenuData(response))
+    new Promise(resolve => resolve(menu)).then(menu => setMenuData(menu))
+  })(), []);
+    
+    
 
   return (
     <main>

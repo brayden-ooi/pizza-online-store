@@ -1,106 +1,91 @@
 import React from "react";
 
-import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import FormInput from "../../../components/form-input/form-input.component";
+
+import { Col, Row, Button, Form } from 'reactstrap';
 
 
-// TODO refactor
-const RegisterDetails = ({ first_name, last_name, address, city, state, zip_code, handleChange, handleSubmit }) => (
-  <Form onSubmit={handleSubmit}>
-    <Row form>
-      <Col md={6}>
-        <FormGroup>
-          <Label for="firstname">First name</Label>
-          <Input 
-            type="text" 
-            name="firstname" 
-            id="firstname"
-            required 
+const RegisterDetails = ({ detailPage, formDispatch, handleSubmit }) => {
+  const handleChange = (targetNode, event) => ({
+    name: "detailPage",
+    value: { 
+      ...detailPage, 
+      [targetNode]: {
+        ...detailPage[targetNode],
+        [event.target.name]: event.target.value }
+      }
+  });
+  const fullNameHandleChange = event => formDispatch(handleChange("fullName", event));
+  const fullAddressHandleChange = event => formDispatch(handleChange("fullAddress", event));
+  
+  const { fullName: { first_name, last_name }, 
+    fullAddress: { address, city, state, zip_code } } = detailPage;
+
+  return (
+    <Form onSubmit={handleSubmit}>
+      <Row form>
+        <Col md={6}>
+          <FormInput 
+            name="first_name"
+            label="First name"
 
             value={ first_name }
-            onChange={ handleChange }
+            onChange={ fullNameHandleChange }
           />
-        </FormGroup>
-      </Col>
-      <Col md={6}>
-        <FormGroup>
-          <Label for="lastname">Last name</Label>
-          <Input 
-            type="text" 
-            name="lastname" 
-            id="lastname"
-            required
+        </Col>
+        <Col md={6}>
+          <FormInput 
+            name="last_name"
+            label="Last name"
 
             value={ last_name }
-            onChange={ handleChange }
+            onChange={ fullNameHandleChange }
           />
-        </FormGroup>
-      </Col>
-    </Row>
+        </Col>
+      </Row>
 
-    <FormGroup>
-      <Label for="address">Address</Label>
-      <Input 
-        type="text" 
-        name="address" 
-        id="address" 
+      <FormInput 
+        name="address"
         placeholder="74 Winthrop Street"
-        required
 
         value={ address }
-        onChange={ handleChange }
+        onChange={ fullAddressHandleChange }
       />
-    </FormGroup>
 
-    <Row form>
-      <Col md={6}>
-        <FormGroup>
-          <Label for="city">City</Label>
-          <Input 
-            type="text" 
-            name="city" 
-            id="city" 
+      <Row form>
+        <Col md={6}>
+          <FormInput 
+            name="city"
             placeholder="Cambridge"
-            required
 
             value={ city }
-            onChange={ handleChange }
+            onChange={ fullAddressHandleChange }
           />
-        </FormGroup>
-      </Col>
-      <Col md={4}>
-        <FormGroup>
-          <Label for="state">State</Label>
-          <Input 
-            type="text" 
-            name="state" 
-            id="state" 
+        </Col>
+        <Col md={4}>
+          <FormInput 
+            name="state"
             placeholder="Massachusetts"
-            required
-            
+
             value={ state }
-            onChange={ handleChange }
+            onChange={ fullAddressHandleChange }
           />
-        </FormGroup>
-      </Col>
-      <Col md={2}>
-        <FormGroup>
-          <Label for="zipCode">Zip</Label>
-          <Input 
-            type="text" 
-            name="zipCode" 
-            id="zipCode" 
+        </Col>
+        <Col md={2}>
+          <FormInput 
+            name="zip_code"
+            label="Zip Code"
             placeholder="02128"
-            required
 
             value={ zip_code }
-            onChange={ handleChange } 
-          />
-        </FormGroup>  
-      </Col>
-    </Row>
+            onChange={ fullAddressHandleChange }
+          /> 
+        </Col>
+      </Row>
 
-    <Button>Register</Button>
-  </Form>
-);
+      <Button>Register</Button>
+    </Form>
+  );
+};
 
 export default RegisterDetails;
