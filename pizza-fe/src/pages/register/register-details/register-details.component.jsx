@@ -2,21 +2,23 @@ import React from "react";
 
 import FormInput from "../../../components/form-input/form-input.component";
 
+import { stateUpdate, correctedPayload } from "../register.utils";
+
 import { Col, Row, Button, Form } from 'reactstrap';
 
 
 const RegisterDetails = ({ detailPage, formDispatch, handleSubmit }) => {
-  const handleChange = (targetNode, event) => ({
-    name: "detailPage",
-    value: { 
-      ...detailPage, 
-      [targetNode]: {
-        ...detailPage[targetNode],
-        [event.target.name]: event.target.value }
-      }
-  });
-  const fullNameHandleChange = event => formDispatch(handleChange("fullName", event));
-  const fullAddressHandleChange = event => formDispatch(handleChange("fullAddress", event));
+  // the original formReducer only works well with flat state, but for registration there are nested objects that are 2 levels deep
+  // therefore the functions below clone the nested objects along with the changes before returning the target object to reducer.
+  const nestedChangeFn = state => (targetNode, event) => 
+    stateUpdate(state, targetNode, 
+      stateUpdate(state[targetNode], event.target.name, event.target.value)); // to update state 2nd level deep
+
+  const handleChange = state => (targetNode, event) => correctedPayload("detailPage")(nestedChangeFn(state)(targetNode, event)); // to update state 1st level deep
+  const detailHandleChange = handleChange(detailPage);
+  
+  const fullNameHandleChange = event => formDispatch({ type: "FORM_CHANGE", payload: detailHandleChange("fullName", event)});
+  const fullAddressHandleChange = event => formDispatch({ type: "FORM_CHANGE", payload: detailHandleChange("fullAddress", event)});
   
   const { fullName: { first_name, last_name }, 
     fullAddress: { address, city, state, zip_code } } = detailPage;

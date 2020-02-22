@@ -3,7 +3,7 @@ import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 import FormInput from "../../../components/form-input/form-input.component";
 
-import { validateUsernameAndEmail } from "../register.utils";
+import { validateUsernameAndEmail, stateUpdate, correctedPayload } from "../register.utils";
 
 import { Button, Form, FormFeedback } from 'reactstrap';
 
@@ -14,13 +14,8 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
   const { username, email, password, passwordConfirm } = mainPage;
   const { emailRejected, usernameRejected, passwordLengthRejected, passwordRejected } = validation;
   
-  const handleChange = event => ({
-    name: "mainPage",
-    value: { 
-      ...mainPage, 
-      [event.target.name]: event.target.value
-      }
-  });
+  const handleChange = (state, event) => correctedPayload("mainPage")(stateUpdate(state, event.target.name, event.target.value));
+  const mainHandleChange = event => formDispatch({ type: "FORM_CHANGE", payload: handleChange(mainPage, event) });
 
   const handleMain = async e => {
     e.preventDefault();
@@ -28,7 +23,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
     formDispatch({ type: "SUBMIT_START" });
 
     try {
-      const { rejectUsername, rejectEmail } = await validateUsernameAndEmail(username, email);
+      const { rejectUsername, rejectEmail } = await validateUsernameAndEmail({username, email});
 
       await formDispatch({ type: "SUBMIT__RESULT", payload: {
         email: !rejectEmail, // raise error if server decided to reject
@@ -57,7 +52,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
           invalid={ usernameRejected }
 
           value={ username }
-          onChange={ handleChange }
+          onChange={ mainHandleChange }
         >
           <FormFeedback>Username taken. Please try another one.</FormFeedback>
         </FormInput>
@@ -69,7 +64,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
           invalid={ emailRejected }
 
           value={ email }
-          onChange={ handleChange }
+          onChange={ mainHandleChange }
         >
           <FormFeedback>Email registered. <Link to="/login">Login here</Link></FormFeedback>
         </FormInput>
@@ -80,7 +75,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
           invalid={ passwordLengthRejected }
 
           value={ password }
-          onChange={ handleChange } 
+          onChange={ mainHandleChange } 
         >
           <FormFeedback>Password must be more than six characters.</FormFeedback>
         </FormInput>
@@ -92,7 +87,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
           invalid={ passwordRejected }
 
           value={ passwordConfirm }
-          onChange={ handleChange } 
+          onChange={ mainHandleChange } 
         >
           <FormFeedback>Passwords do not match.</FormFeedback>
         </FormInput>

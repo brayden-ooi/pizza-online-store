@@ -1,9 +1,10 @@
 import React, { lazy, Suspense, useContext, useEffect } from 'react';
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import Header from "./components/header/header.component";
 import Footer from "./components/footer/footer.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
+import PrivateRoute from "./components/private-route/private-route.component";
 
 import { UserContext } from "./providers/user/user.provider";
 
@@ -49,11 +50,32 @@ function App() {
       <Switch>
         <ErrorBoundary>
           <Suspense fallback={<div>I am loading!</div>}>
-            <Route exact path="/" component={HomePage} />
-            <Route exact path="/menu" component={MenuPage} />
-            <Route exact path="/signin" render={() => userState ? <Redirect to="/" /> : <SignInPage />} />
-            <Route path="/register" render={() => userState ? <Redirect to="/" /> : <RegisterPage />} />
-            <Route exact path="/checkout" render={() => userState ? <CheckoutPage /> : <Redirect to="/signin" />} />
+            <Route exact path="/"><HomePage /></Route>
+            <Route exact path="/menu"><MenuPage /></Route>
+            <PrivateRoute 
+              exact 
+              path="/signin" 
+              condition={!userState}
+              deniedPath="/"
+            >
+              <SignInPage />
+            </PrivateRoute>
+            <PrivateRoute 
+              exact 
+              path="/register"
+              condition={!userState}
+              deniedPath="/"
+            >
+              <RegisterPage />
+            </PrivateRoute>
+            <PrivateRoute 
+              exact 
+              path="/checkout"
+              condition={userState}
+              deniedPath="/signin"
+            >
+              <CheckoutPage />
+            </PrivateRoute>
           </Suspense>
         </ErrorBoundary>
       </Switch>

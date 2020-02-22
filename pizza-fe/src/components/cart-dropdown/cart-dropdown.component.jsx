@@ -1,12 +1,13 @@
 import React, { useState, useContext } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import { CartContext } from '../../providers/cart/cart.provider';
 
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
 
 
-const CartDropdown = ({ history }) => {
+const CartDropdown = () => {
+  const history = useHistory();
   const { cartItems } = useContext(CartContext);
   const [ dropdownOpen, setDropdownOpen ] = useState(false);
 
@@ -43,4 +44,4 @@ const CartDropdown = ({ history }) => {
   );
 };
 
-export default withRouter(CartDropdown);
+export default CartDropdown;

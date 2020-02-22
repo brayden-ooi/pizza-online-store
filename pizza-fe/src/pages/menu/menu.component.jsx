@@ -1,21 +1,17 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 
 import MenuCollection from "../../components/menu-collection/menu-collection.component";
 
-import MenuContext, { fetchMenu } from "../../context/menu/menu.context";
+import { fetchMenu } from "./menu.utils";
 
 
 const MenuPage = () => {
-  const menu = useContext(MenuContext);
   const [menuData, setMenuData] = useState(null);
   
-  useEffect(() => (() => {
-    // fetchMenu.then(response => setMenuData(response))
-    new Promise(resolve => resolve(menu)).then(menu => setMenuData(menu))
-  })(), []);
+  useEffect(() => {
+    Promise.resolve(fetchMenu()).then(menu => setMenuData(menu));
+  }, []);
     
-    
-
   return (
     <main>
       {

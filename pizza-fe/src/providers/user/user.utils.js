@@ -1,6 +1,6 @@
-const API_HOST = "http://127.0.0.1:8000/api/";
+export const API_HOST = "http://127.0.0.1:8000/api/";
 
-const userHandle = path => async userCredentials => {
+export const userHandle = path => async userCredentials => {
   const request = await fetch(`${API_HOST}${path}`, {
     method: 'POST',
     credentials: 'include',
