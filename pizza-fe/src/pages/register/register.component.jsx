@@ -11,10 +11,10 @@ import { UserContext } from "../../providers/user/user.provider";
 
 
 const INITIAL_REGISTER_VALIDATION = {
-  email: null, 
-  username: null,
+  validEmail: null, 
+  validUsername: null,
   passwordLength: null,
-  passwordConfirm: null
+  passwordMatch: null
 };
 
 const INITIAL_STATE = { 
@@ -47,19 +47,6 @@ const RegisterPage = () => {
   const [ formState, formDispatch ] = useReducer(RegisterPageReducer, INITIAL_STATE);
   const [ detailEntry, setDetailEntry ] = useState(false);
 
-  // const [ userCredentials, setCredentials ] = useState({ 
-  //   username: "",
-  //   first_name: "",
-  //   last_name: "",
-  //   email: "", 
-  //   password: "",
-  //   address: "",
-  //   city: "",
-  //   state: "",
-  //   zip_code: "",
-  //   passwordConfirm: ""
-  // });
-
   const handleSubmit = async event => {
     event.preventDefault();
 
@@ -68,7 +55,7 @@ const RegisterPage = () => {
     try {
       const response = await userRegister(formState);
       
-      await formDispatch({ type: "SUBMIT__RESULT", payload: response });
+      await formDispatch({ type: "SUBMIT_RESULT", payload: response });
 
       await (() => response && (
         formDispatch({ type: "SUBMIT_SUCCESS" }) ||

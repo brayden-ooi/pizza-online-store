@@ -1,15 +1,18 @@
 import { API_HOST, getCSRFToken } from "../../providers/user/user.utils";
 
 
-// TODO remove token
 export const fetchMenu = () => {
-  return JSON.parse(window.localStorage.getItem("menu")) || fetch(`${API_HOST + "menu"}`, {
-    credentials: 'include',
-    headers: {
-      'Authorization': 'Token 0fb57f50eff6113288937be4a8d15fbadaf62b70',
-      'Content-Type': 'application/json',
-      'X-CSRFToken': getCSRFToken()
-    }})
+  return JSON.parse(window.localStorage.getItem("menu")) || fetch(`${API_HOST + "menu/"}`, 
+  // {
+    // mode: 'cors',
+    // credentials: 'include',
+    // headers: {
+      // 'Content-Type': 'application/json',
+      // 'Accept': 'application/json',
+      // 'Origin': 'http://192.168.43.6:3000'
+      // 'X-CSRFToken': getCSRFToken()
+    // }}
+    )
     .then(response => [response, response.clone()])
     .then(responses => Promise.all([responses[0].json(), responses[1].text()]))
     .then(responses => {

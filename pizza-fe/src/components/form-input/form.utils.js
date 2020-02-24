@@ -6,7 +6,7 @@ const validationWarning = (validationStatus = null) => {
       ...currentValidationStatus,
       [currentKey]: validationWarning(validationStatus[currentKey])
     }), {});
-  } else if (typeof validationStatus == "string") {
+  } else if (typeof validationStatus == "boolean") {
     return !validationStatus;
   }
 };

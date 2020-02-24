@@ -11,7 +11,7 @@ const CartDropdown = () => {
   const { cartItems } = useContext(CartContext);
   const [ dropdownOpen, setDropdownOpen ] = useState(false);
 
-  const toggle = () => setDropdownOpen(prevState => !prevState);
+  const toggle = () => setDropdownOpen(!dropdownOpen);
 
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle}>
@@ -22,7 +22,10 @@ const CartDropdown = () => {
         <div>
           {cartItems.length ? (
             cartItems.map(cartItem => (
-              <DropdownItem key={cartItem.id} item={cartItem} />
+              <DropdownItem key={cartItem.id}>
+                <span>{ cartItem.name }</span>
+                <span>{ cartItem.price }</span>
+              </DropdownItem>
             ))
           ) : (
             <DropdownItem>Your cart is empty</DropdownItem>
@@ -33,7 +36,6 @@ const CartDropdown = () => {
         <Button tag="div"
           onClick={() => {
             history.push('/checkout');
-            toggle();
           }}
         >
           GO TO CHECKOUT

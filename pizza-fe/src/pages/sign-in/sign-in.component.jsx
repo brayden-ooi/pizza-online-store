@@ -28,7 +28,7 @@ const SignInPage = () => {
     try {
       const response = await userSignIn({ username, password });
 
-      await formDispatch({ type: "SUBMIT__RESULT", payload: response });
+      await formDispatch({ type: "SUBMIT_RESULT", payload: response });
 
       await (() => response && (
         formDispatch({ type: "SUBMIT_SUCCESS" }) ||

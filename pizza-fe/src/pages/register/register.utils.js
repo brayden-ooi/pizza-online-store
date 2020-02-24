@@ -9,6 +9,6 @@ export const stateUpdate = (state, targetNode, updatedValue) => ({
 });
 
 export const correctedPayload = name => valueFn => ({
-  ...name,
-  value: valueFn()
+  name: name,
+  value: valueFn
 });

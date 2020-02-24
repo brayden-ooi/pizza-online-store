@@ -8,14 +8,17 @@ import { validateUsernameAndEmail, stateUpdate, correctedPayload } from "../regi
 import { Button, Form, FormFeedback } from 'reactstrap';
 
 
-const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) => {
+const RegisterMain = ({ mainPage, validationStatus, formDispatch, setDetailEntry }) => {
   const history = useHistory();
   const { path } = useRouteMatch();
   const { username, email, password, passwordConfirm } = mainPage;
-  const { emailRejected, usernameRejected, passwordLengthRejected, passwordRejected } = validation;
+  const { validEmail, validUsername, passwordLength, passwordMatch } = validationStatus;
   
   const handleChange = (state, event) => correctedPayload("mainPage")(stateUpdate(state, event.target.name, event.target.value));
-  const mainHandleChange = event => formDispatch({ type: "FORM_CHANGE", payload: handleChange(mainPage, event) });
+  const mainHandleChange = event => {
+    formDispatch({ type: "FORM_CHANGE", payload: handleChange(mainPage, event) });
+    console.log(handleChange(mainPage, event));
+  };
 
   const handleMain = async e => {
     e.preventDefault();
@@ -24,19 +27,19 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
 
     try {
       const { rejectUsername, rejectEmail } = await validateUsernameAndEmail({username, email});
-
-      await formDispatch({ type: "SUBMIT__RESULT", payload: {
-        email: !rejectEmail, // raise error if server decided to reject
-        username: !rejectUsername, // same
+      const currentValidationStatus = await {
+        validEmail: !rejectEmail, // raise error if server decided to reject
+        validUsername: !rejectUsername, // same
         passwordLength: password.length > 5,
-        passwordConfirm: (password === passwordConfirm)
-      }});
+        passwordMatch: (password === passwordConfirm)
+      };
 
+      await formDispatch({ type: "SUBMIT_RESULT", payload: currentValidationStatus });
       await (() => {
-        if (Object.values(validation).every(result => result !== null && !result)) {
+        if (Object.values(currentValidationStatus).every(result => result)) {
           setDetailEntry(true);
           history.push(`${path}/details`);
-        }
+        };
       })();
     } catch(error) {
       console.log(error);
@@ -49,7 +52,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
         <FormInput
           name="username"
           placeholder="John"
-          invalid={ usernameRejected }
+          invalid={ validUsername }
 
           value={ username }
           onChange={ mainHandleChange }
@@ -61,7 +64,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
           name="email"
           type="email"
           placeholder="John@hotmail.com"
-          invalid={ emailRejected }
+          invalid={ validEmail }
 
           value={ email }
           onChange={ mainHandleChange }
@@ -72,7 +75,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
         <FormInput 
           name="password"
           type="password"
-          invalid={ passwordLengthRejected }
+          invalid={ passwordLength }
 
           value={ password }
           onChange={ mainHandleChange } 
@@ -84,7 +87,7 @@ const RegisterMain = ({ mainPage, validation, formDispatch, setDetailEntry }) =>
           name="passwordConfirm"
           label="Confirm Password"
           type="password"
-          invalid={ passwordRejected }
+          invalid={ passwordMatch }
 
           value={ passwordConfirm }
           onChange={ mainHandleChange } 

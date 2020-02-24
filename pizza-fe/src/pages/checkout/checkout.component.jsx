@@ -31,18 +31,6 @@ const CheckoutPage = () => {
               <CheckoutItem key={cartItem.id} cartItem={cartItem} />
             )
           }
-          <tr>
-            <td>Regular Pizza</td>
-            <td>Regular Pizza</td>
-            <td>Small</td>
-            <td>
-              <div>&#10094;</div>
-              1
-              <div>&#10095;</div>
-            </td>
-            <td>12.95</td>
-            <td>&#10005;</td>
-          </tr>
         </tbody>
         <tfoot>
           <tr>

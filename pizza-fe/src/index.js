@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter } from "react-router-dom";
 
 import UserProvider from "./providers/user/user.provider";
+import CartProvider from "./providers/cart/cart.provider";
 
 import './index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,11 +13,13 @@ import * as serviceWorker from './serviceWorker';
 
 
 ReactDOM.render(
-  <UserProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </UserProvider>, 
+  <CartProvider>
+    <UserProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </UserProvider>
+  </CartProvider>, 
   document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

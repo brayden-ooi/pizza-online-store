@@ -14,8 +14,8 @@ const StripeCheckoutButton = ({ price }) => {
     <StripeCheckout
       label='Pay Now'
       name="Pinocchio's Pizza & Subs"
-      billingAddress
-      shippingAddress
+      billingAddress={false}
+      shippingAddress={false}
       description={`Your total is $${price}`}
       amount={priceForStripe}
       panelLabel='Pay Now'
