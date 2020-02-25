@@ -2,7 +2,7 @@ import React from "react";
 
 import FormInput from "../../../components/form-input/form-input.component";
 
-import { stateUpdate, correctedPayload } from "../register.utils";
+import { stateUpdate, correctedPayload } from "../../../reducers/form/form.utils";
 
 import { Col, Row, Button, Form } from 'reactstrap';
 

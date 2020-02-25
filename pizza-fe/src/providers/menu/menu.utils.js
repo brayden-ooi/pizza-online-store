@@ -1,4 +1,4 @@
-import { API_HOST, getCSRFToken } from "../../providers/user/user.utils";
+import { API_HOST, getCSRFToken } from "../../reducers/root.utils";
 
 
 export const fetchMenu = () => {

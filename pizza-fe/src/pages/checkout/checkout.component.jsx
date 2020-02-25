@@ -6,15 +6,15 @@ import StripeCheckoutButton from '../../components/stripe-button/stripe-button.c
 import { CartContext } from '../../providers/cart/cart.provider';
 
 import { Table } from 'reactstrap';
+import './checkout.styles.scss';
 
 
 const CheckoutPage = () => {
   const { cartItems, cartTotal } = useContext(CartContext);
 
-
   return (
     <main>
-      <Table>
+      <Table hover className="checkout-page">
         <thead>
           <tr>
             <th>Item</th>

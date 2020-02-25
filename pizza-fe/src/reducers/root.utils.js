@@ -15,11 +15,7 @@ export const userHandle = path => async userCredentials => {
   const response = await request.json();
 
   return response;
-}
-
-export const userSignIn = userHandle("login");
-
-export const userRegister = userHandle("register");
+};
 
 // https://docs.djangoproject.com/en/3.0/ref/csrf/#ajax
 export const getCSRFToken = async () => {
@@ -40,14 +36,4 @@ export const getCSRFToken = async () => {
 
     return _csrfToken;
   }
-};
-
-export const addToken = token => {
-  window.localStorage.setItem("token", token);
-  return token;
-};
-
-export const removeToken = () => {
-  window.localStorage.removeItem("token");
-  return null;
 };

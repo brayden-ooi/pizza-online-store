@@ -5,10 +5,11 @@ import Header from "./components/header/header.component";
 import Footer from "./components/footer/footer.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
 import PrivateRoute from "./components/private-route/private-route.component";
+import MenuProvider from "./providers/menu/menu.provider";
 
 import { UserContext } from "./providers/user/user.provider";
 
-import { getCSRFToken } from "./providers/user/user.utils";
+// import { getCSRFToken } from "./providers/user/user.utils";
 
 import './App.css';
 
@@ -51,7 +52,11 @@ function App() {
         <ErrorBoundary>
           <Suspense fallback={<div>I am loading!</div>}>
             <Route exact path="/"><HomePage /></Route>
-            <Route exact path="/menu"><MenuPage /></Route>
+            <Route exact path="/menu">
+              <MenuProvider>
+                <MenuPage />
+              </MenuProvider>
+            </Route>
             <PrivateRoute 
               exact 
               path="/signin" 

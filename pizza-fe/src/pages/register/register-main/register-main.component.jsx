@@ -3,7 +3,8 @@ import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 import FormInput from "../../../components/form-input/form-input.component";
 
-import { validateUsernameAndEmail, stateUpdate, correctedPayload } from "../register.utils";
+import { stateUpdate, correctedPayload } from "../../../reducers/form/form.utils";
+import { validateUsernameAndEmail } from "../../../reducers/register/register.utils";
 
 import { Button, Form, FormFeedback } from 'reactstrap';
 

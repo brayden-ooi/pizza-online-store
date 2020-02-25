@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
-import { CartContext } from '../../providers/cart/cart.provider';
+import CartItem from "../cart-item/cart-item.component";
 
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Button } from 'reactstrap';
+import { CartContext } from "../../providers/cart/cart.provider";
+
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
 
 
 const CartDropdown = () => {
@@ -21,25 +23,19 @@ const CartDropdown = () => {
       <DropdownMenu right>
         <div>
           {cartItems.length ? (
-            cartItems.map(cartItem => (
-              <DropdownItem key={cartItem.id}>
-                <span>{ cartItem.name }</span>
-                <span>{ cartItem.price }</span>
-              </DropdownItem>
+            cartItems.map(({ id, ...otherProps }) => (
+              <CartItem key={id} {...otherProps} />
             ))
           ) : (
             <DropdownItem>Your cart is empty</DropdownItem>
           )}
         </div>
       <DropdownItem divider />
-      <DropdownItem>
-        <Button tag="div"
-          onClick={() => {
-            history.push('/checkout');
-          }}
-        >
-          GO TO CHECKOUT
-        </Button>
+      <DropdownItem className="text-center"
+        onClick={() => {
+          history.push("/checkout");
+        }}>
+          Go to Checkout
       </DropdownItem>
       </DropdownMenu>
     </Dropdown>

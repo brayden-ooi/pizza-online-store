@@ -1,24 +1,12 @@
 import React, { useState, useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import CartDropdown from '../cart-dropdown/cart-dropdown.component';
+import { default as NavLink } from "../custom-navlink/custom-navlink.component";
 
 import { UserContext } from "../../providers/user/user.provider";
 
 import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavbarToggler } from "reactstrap";
-
-const NLink = ({ children, ...otherProps }) => (
-  <NavLink
-    className="nav-link" 
-    activeStyle={{
-      fontWeight: "bold",
-      color: "red"
-    }}
-    {...otherProps}
-    >
-    { children }
-  </NavLink>
-);
 
 
 const Header = () => {
@@ -37,13 +25,13 @@ const Header = () => {
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
-              <NLink to="/menu">Menu</NLink>
+              <NavLink to="/menu">Menu</NavLink>
             </NavItem>
             <NavItem>
-              <NLink to="/about">About</NLink>
+              <NavLink to="/about">About</NavLink>
             </NavItem>
             <NavItem>
-              <NLink to="/contact">Contact</NLink>
+              <NavLink to="/contact">Contact</NavLink>
             </NavItem>
           </Nav>
           {

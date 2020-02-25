@@ -5,19 +5,15 @@ import FormInput from "../../components/form-input/form-input.component";
 
 import { UserContext } from "../../providers/user/user.provider";
 
-import { formReducer } from "../../components/form-input/form.utils";
-import { userSignIn } from "../../providers/user/user.utils";
+import { loginPageReducer, INITIAL_STATE } from "../../reducers/login/login.reducer";
+import { userSignIn } from "../../reducers/user/user.utils";
 
 import { Button, Form, FormFeedback } from 'reactstrap';
 
 
-const INITIAL_STATE = { username: "", password: "", validationStatus: null };
-
-const LoginPageReducer = formReducer(INITIAL_STATE);
-
 const SignInPage = () => {
   const { userDispatch } = useContext(UserContext);
-  const [ formState, formDispatch ] = useReducer(LoginPageReducer, INITIAL_STATE);
+  const [ formState, formDispatch ] = useReducer(loginPageReducer, INITIAL_STATE);
   const { username, password, validationStatus } = formState;
 
   const handleSubmit = async event => {

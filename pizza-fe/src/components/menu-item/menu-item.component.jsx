@@ -6,22 +6,25 @@ import {
   Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button
 } from "reactstrap";
+import "./menu-item.styles.scss";
 
 
-const MenuItem = ({ menuItem }) => {
+const MenuItem = ({ menuItem, group }) => {
   const { food_name, price, small_price, large_price } = menuItem;
-  const { toggleModal, getItem } = useContext(MenuContext);
+  const { menuDispatch } = useContext(MenuContext);
 
   const handleClick = () => {
-    getItem(menuItem);
-    toggleModal();
+    menuDispatch({
+      type: "SET_MODAL_BODY",
+      payload: {
+        item: menuItem,
+        name: group
+      }
+    });
   }
 
   return (
-    <Card style={{ 
-      flexGrow: "0",
-      flexBasis: "auto"
-    }}>
+    <Card className="menu-item">
       <CardImg top width="100%" src="300x200.svg" alt="Card image cap" />
       <CardBody className="text-center">
         <CardTitle>{ food_name }</CardTitle>
