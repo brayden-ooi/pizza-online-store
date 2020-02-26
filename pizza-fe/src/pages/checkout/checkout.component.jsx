@@ -32,11 +32,7 @@ const CheckoutPage = () => {
             )
           }
         </tbody>
-        <tfoot>
-          <tr>
-            <td>TOTAL: ${cartTotal}</td>
-          </tr>
-        </tfoot>
+        <div>TOTAL: ${cartTotal}</div>
       </Table>
       <StripeCheckoutButton price={cartTotal} />
     </main>

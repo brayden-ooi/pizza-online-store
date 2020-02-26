@@ -80,9 +80,6 @@ function App() {
             >
               <CheckoutPage />
             </PrivateRoute>
-            <Route path="*">
-              <div>This page is not found!</div>
-            </Route>
           </Suspense>
         </ErrorBoundary>
       </Switch>

@@ -1,5 +1,6 @@
 import React, { useContext } from "react";
 
+import { CartContext } from "../../providers/cart/cart.provider";
 import { MenuContext } from "../../providers/menu/menu.provider";
 
 import {
@@ -9,18 +10,27 @@ import {
 import "./menu-item.styles.scss";
 
 
-const MenuItem = ({ menuItem, group }) => {
-  const { food_name, price, small_price, large_price } = menuItem;
+const MenuItem = ({ menuItem, settings }) => {
+  const { addItem } = useContext(CartContext);
+  const { id, food_name, price, small_price, large_price } = menuItem;
   const { menuDispatch } = useContext(MenuContext);
 
   const handleClick = () => {
-    menuDispatch({
-      type: "SET_MODAL_BODY",
-      payload: {
-        item: menuItem,
-        name: group
-      }
-    });
+    if (settings.triggerModal) {
+      menuDispatch({
+        type: "SET_MODAL_BODY",
+        payload: {
+          item: menuItem,
+          settings
+        }
+      });
+    } else {
+      addItem({
+        id,
+        name: food_name,
+        price,
+      });
+    }
   }
 
   return (
@@ -34,7 +44,9 @@ const MenuItem = ({ menuItem, group }) => {
             small_price && 
               <div>Small: { small_price } Large: { large_price }</div>
           } */}
-          <Button onClick={ handleClick }>Yes I want it!</Button>
+          {
+            settings.disabled ? null : <Button onClick={ handleClick }>Yes I want it!</Button>
+          }
         </CardText>
       </CardBody>
     </Card>
