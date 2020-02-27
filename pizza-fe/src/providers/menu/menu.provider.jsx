@@ -1,10 +1,19 @@
-import React, { useReducer, createContext } from 'react';
+import React, { useEffect, useReducer, createContext } from 'react';
 
 
+const MENU_MAP = {
+  "Pizza": 0,
+  "Topping": 1,
+  "Subs": 2,
+  "Pasta": 3,
+  "Salad": 4, 
+  "DinnerPlatter": 5,
+  "SubsAddition": 6
+}
 const MENU_SETTINGS = {
   "DinnerPlatter": {
     name: "Dinner Platters",
-    order: 6,
+    type: MENU_MAP["DinnerPlatter"],
     display: true,
     triggerModal: {
       size: true
@@ -12,55 +21,58 @@ const MENU_SETTINGS = {
   },
   "Pasta": {
     name: "Pastas",
-    order: 4,
+    type: MENU_MAP["Pasta"],
     display: true,
     triggerModal: false
   },
   "Pizza": {
     name: "Pizzas",
-    order: 1,
+    type: MENU_MAP["Pizza"],
     display: true,
     triggerModal: {
       size: true,
-      type: ["cheese", "toppings", "special"],
-      addOns: 1
+      pizza_styles: ["cheese", "toppings", "special"],
+      addOns: MENU_MAP["Topping"]
     },
     replaceWith : [
       {
         id: 1, 
         food_name: "Regular Pizza",
-
+        pizza_type: "RG",
+        small_price: "12.70"
       }, 
       {
         id: 2,
-        food_name: "Sicilian Pizza"
+        food_name: "Sicilian Pizza",
+        pizza_type: "SC",
+        small_price: "24.45"
       }
     ]
   },
   "Salad": {
     name: "Salads",
-    order: 5,
+    type: MENU_MAP["Salad"],
     display: true,
     triggerModal: false
   },
   "Subs": {
     name: "Subs",
-    order: 3, 
+    type: MENU_MAP["Subs"],
     display: true,
     triggerModal: {
       size: true,
-      addOns: 6
+      addOns: MENU_MAP["SubsAddition"]
     }
   },
   "SubsAddition": {
     name: "Add Ons",
-    order: 7,
+    type: MENU_MAP["SubsAddition"],
     display: false,
     triggerModal: false
   },
   "Topping": {
     name: "Toppings",
-    order: 2,
+    type: MENU_MAP["Topping"],
     display: true,
     triggerModal: false,
     disabled: true
@@ -98,6 +110,50 @@ const menuReducer = (state, action) => {
     default:
       return state;
   }
+};
+
+const orderReducer = (state, action) => {
+  switch (action.type) {
+    case "ORDER_START":
+      return {
+        ...INITIAL_ORDER_STATE,
+        item: action.payload,
+        id: action.payload.id,
+        name: action.payload.food_name
+      };
+    case "ORDER_SET_SIZE":
+      return {
+        ...state,
+        size: action.payload.size,
+        itemPrice: parseFloat(state.item[action.payload.itemPrice] || 0), 
+        totalPrice: (parseFloat(state.item[action.payload.itemPrice] || 0) + state.addOnPrice).toFixed(2)
+      };
+    case "PIZZA_SET_TYPE_STYLE":
+      return {
+        ...state,
+        item: action.payload.item,
+        id: action.payload.id,
+        name: action.payload.name,
+        type: action.payload.type,
+        style: action.payload.style
+      };
+    case "ORDER_SET_ADDONS":
+      return {
+        ...state,
+        addOnPrice: state.addOnPrice + action.payload.addOnPrice,
+        totalPrice: (state.itemPrice + state.addOnPrice + action.payload.addOnPrice).toFixed(2),
+        addOns: [...state.addOns, action.payload.addOnId]
+      }
+    case "ORDER_REMOVE_ADDONS":
+      return {
+        ...state,
+        addOnPrice: state.addOnPrice - action.payload.addOnPrice,
+        totalPrice: (state.itemPrice + state.addOnPrice - action.payload.addOnPrice).toFixed(2),
+        addOns: state.addOns.filter(item => item !==action.payload.addOnId)
+      }
+    default:
+      return state;
+  }
 }
 
 export const MenuContext = createContext({
@@ -105,13 +161,32 @@ export const MenuContext = createContext({
   menuDispatch: () => {}
 });
 
+const INITIAL_ORDER_STATE = {
+  item: null,
+  id: null,
+  name: null,
+  type: null,
+  style: null, 
+  totalPrice: 0,
+  itemPrice: 0,
+  addOnPrice: 0,
+  addOns: []
+}
+
 const MenuProvider = ({ children }) => {
   const [menuState, menuDispatch] = useReducer(menuReducer, INITIAL_STATE);
+  const [orderState, orderDispatch] = useReducer(orderReducer, INITIAL_ORDER_STATE); 
+
+  useEffect(() => {
+    console.log(orderState);
+  }, [orderState]);
 
   return (
     <MenuContext.Provider value={{
       menuState,
-      menuDispatch
+      menuDispatch,
+      orderState,
+      orderDispatch
     }}>
       { children }
     </MenuContext.Provider>

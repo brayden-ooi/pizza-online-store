@@ -13,15 +13,19 @@ import "./menu-item.styles.scss";
 const MenuItem = ({ menuItem, settings }) => {
   const { addItem } = useContext(CartContext);
   const { id, food_name, price, small_price, large_price } = menuItem;
-  const { menuDispatch } = useContext(MenuContext);
+  const { menuDispatch, orderDispatch } = useContext(MenuContext);
 
   const handleClick = () => {
     if (settings.triggerModal) {
+      orderDispatch({
+        type: "ORDER_START",
+        payload: menuItem
+      });
       menuDispatch({
         type: "SET_MODAL_BODY",
         payload: {
           item: menuItem,
-          settings
+          settings,
         }
       });
     } else {
@@ -33,19 +37,18 @@ const MenuItem = ({ menuItem, settings }) => {
     }
   }
 
+  // need to account for price, small_price and items with no prices
   return (
     <Card className="menu-item">
       <CardImg top width="100%" src="300x200.svg" alt="Card image cap" />
       <CardBody className="text-center">
         <CardTitle>{ food_name }</CardTitle>
         <CardText>
-          {/* { price && <div>Price: { price }</div> }
-          { 
-            small_price && 
-              <div>Small: { small_price } Large: { large_price }</div>
-          } */}
           {
-            settings.disabled ? null : <Button onClick={ handleClick }>Yes I want it!</Button>
+            (price || small_price || large_price) && <span>$ {price || (small_price || large_price) + "+"}</span>
+          }
+          {
+            settings.disabled ? null : <Button onClick={ handleClick }>Add to cart</Button>
           }
         </CardText>
       </CardBody>

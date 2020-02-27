@@ -15,18 +15,18 @@ const MenuPage = () => {
   useEffect(() => {
     Promise.resolve(fetchMenu())
     .then(menu => {
-      console.log( Object.keys(menu).reduce((MenuArray, currentItem) => ([
+      console.log(Object.keys(menu).reduce((MenuArray, currentItem) => ([
         ...MenuArray,
         [menu[currentItem], settings[currentItem]]
-      ]), []).sort((a, b) => a[1]["order"] - b[1]["order"]));
+      ]), []).sort((a, b) => a[1]["type"] - b[1]["type"]));
 
       menuDispatch({ 
         type: "SET_MENU", 
         payload: Object.keys(menu).reduce((MenuArray, currentItem) => ([
           ...MenuArray,
           [menu[currentItem], settings[currentItem]]
-        ]), []).sort((a, b) => a[1]["order"] - b[1]["order"])
-      })
+        ]), []).sort((a, b) => a[1]["type"] - b[1]["type"])
+      });
     }
   )}, []);
     
