@@ -125,32 +125,35 @@ const orderReducer = (state, action) => {
       return {
         ...state,
         size: action.payload.size,
-        itemPrice: parseFloat(state.item[action.payload.itemPrice] || 0), 
-        totalPrice: (parseFloat(state.item[action.payload.itemPrice] || 0) + state.addOnPrice).toFixed(2)
+        itemPrice: action.payload.itemPrice, 
+        totalPrice: (action.payload.itemPrice + state.addOnPrice).toFixed(2)
       };
-    case "PIZZA_SET_TYPE_STYLE":
-      return {
-        ...state,
-        item: action.payload.item,
-        id: action.payload.id,
-        name: action.payload.name,
-        type: action.payload.type,
-        style: action.payload.style
-      };
+
     case "ORDER_SET_ADDONS":
       return {
         ...state,
         addOnPrice: state.addOnPrice + action.payload.addOnPrice,
         totalPrice: (state.itemPrice + state.addOnPrice + action.payload.addOnPrice).toFixed(2),
         addOns: [...state.addOns, action.payload.addOnId]
-      }
+      };
     case "ORDER_REMOVE_ADDONS":
       return {
         ...state,
         addOnPrice: state.addOnPrice - action.payload.addOnPrice,
         totalPrice: (state.itemPrice + state.addOnPrice - action.payload.addOnPrice).toFixed(2),
         addOns: state.addOns.filter(item => item !==action.payload.addOnId)
-      }
+      };
+    case "PIZZA_SET_SIZE":
+      return {
+        ...state,
+        size: action.payload
+      };
+    case "PIZZA_SET_PRICE":
+      return {
+        ...state,
+        itemPrice: action.payload,
+        totalPrice: (action.payload + state.addOnPrice).toFixed(2),
+      };
     default:
       return state;
   }
@@ -167,6 +170,7 @@ const INITIAL_ORDER_STATE = {
   name: null,
   type: null,
   style: null, 
+  size: null,
   totalPrice: 0,
   itemPrice: 0,
   addOnPrice: 0,
