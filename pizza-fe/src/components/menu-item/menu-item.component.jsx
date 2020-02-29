@@ -3,6 +3,8 @@ import React, { useContext } from "react";
 import { CartContext } from "../../providers/cart/cart.provider";
 import { MenuContext } from "../../providers/menu/menu.provider";
 
+import { correctedPayload, stateUpdate } from '../../reducers/form/form.utils';
+
 import {
   Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Button
@@ -10,29 +12,36 @@ import {
 import "./menu-item.styles.scss";
 
 
-const MenuItem = ({ menuItem, settings }) => {
+const MenuItem = ({ menuItem, mapKey }) => {
   const { addItem } = useContext(CartContext);
+  const { menuState: { menu, menuOrder, modal, order, settings, initialOrderState }, menuDispatch } = useContext(MenuContext);
+
   const { id, food_name, price, small_price, large_price } = menuItem;
-  const { menuDispatch, orderDispatch } = useContext(MenuContext);
+  const { triggerModal, disabled } = settings[menuOrder[mapKey]];
+  const { size, style, addOns } = triggerModal;
+
+  const displayPrice = price || small_price || large_price;
 
   const handleClick = () => {
-    if (settings.triggerModal) {
-      orderDispatch({
-        type: "ORDER_START",
-        payload: menuItem
-      });
-      menuDispatch({
-        type: "SET_MODAL_BODY",
-        payload: {
-          item: menuItem,
-          settings,
+    menuDispatch({
+      type: "ORDER_START",
+      payload: {
+        modal: {
+          ...modal,
+          isToggled: !!triggerModal,
+          ...initialOrderState(size, addOns, menu[menuOrder.indexOf(addOns)])
+        },
+        order: {
+          ...order,
+          item: menuItem
         }
-      });
-    } else {
+      }
+    });
+    if (triggerModal) {
       addItem({
         id,
         name: food_name,
-        price,
+        price
       });
     }
   }
@@ -45,10 +54,11 @@ const MenuItem = ({ menuItem, settings }) => {
         <CardTitle>{ food_name }</CardTitle>
         <CardText>
           {
-            (price || small_price || large_price) && <span>$ {price || (small_price || large_price) + "+"}</span>
+            displayPrice && 
+              <span>$ {price || displayPrice + "+"}</span>
           }
           {
-            settings.disabled ? null : <Button onClick={ handleClick }>Add to cart</Button>
+            disabled && <Button onClick={ handleClick }>Add to cart</Button>
           }
         </CardText>
       </CardBody>

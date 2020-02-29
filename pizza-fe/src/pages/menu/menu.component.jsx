@@ -10,40 +10,24 @@ import { fetchMenu } from "../../providers/menu/menu.utils";
 
 const MenuPage = () => {
   const { menuState, menuDispatch } = useContext(MenuContext);
-  const { menu, settings } = menuState; 
+  const { menu, menuOrder } = menuState;
   
   useEffect(() => {
-    Promise.resolve(fetchMenu())
-    .then(menu => {
-      console.log(Object.keys(menu).reduce((MenuArray, currentItem) => ([
-        ...MenuArray,
-        [menu[currentItem], settings[currentItem]]
-      ]), []).sort((a, b) => a[1]["type"] - b[1]["type"]));
-
-      menuDispatch({ 
-        type: "SET_MENU", 
-        payload: Object.keys(menu).reduce((MenuArray, currentItem) => ([
-          ...MenuArray,
-          [menu[currentItem], settings[currentItem]]
-        ]), []).sort((a, b) => a[1]["type"] - b[1]["type"])
-      });
-    }
+    Promise.resolve(fetchMenu()).then(menu => menuDispatch({ 
+      type: "SET_MENU", 
+      payload: menuOrder.map(group => menu[group])
+    })
   )}, []);
+
+  useEffect(() => {
+    console.log(menuState);
+  }, [menuState]);
     
   return (
     <div>
-      <MenuModal />
+      {/* <MenuModal /> */}
       {
-        menu ? menu.map((menuCollection, index) => {
-          if (menuCollection[1]["display"]) {
-            return (
-              <section key={index}>
-                <span>{ menuCollection[1]["name"] }</span>
-                <MenuCollection menuCollection={menuCollection} />
-              </section>
-            );
-          }
-        }) : null
+        menu ? menu.map((menuCollection, index) => <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />) : null
       }
     </div>
   );

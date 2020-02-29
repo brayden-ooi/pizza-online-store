@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useReducer, useContext } from 'react';
+import React, { useEffect, useReducer, useContext } from 'react';
 
 import { CartContext } from "../../providers/cart/cart.provider";
-import { MenuContext } from "../../providers/menu/menu.provider";
+import { INITIAL_ORDER_STATE, MenuContext } from "../../providers/menu/menu.provider";
 
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, 
   FormGroup, Label, CustomInput, Form, Col } from 'reactstrap';
@@ -36,10 +36,9 @@ const pizzaReducer = (state, action) => {
 }
 
 const PizzaSettingsHandler = ({ settings, item }) => {
-  const { menuState: { menu }, orderState, orderDispatch } = useContext(MenuContext);
+  const { menuState: { menu }, menuDispatch } = useContext(MenuContext);
   
   const { addOns, pizza_styles } = settings.triggerModal;
-  const addOnList = addOns && menu[addOns][0];
 
   const INITIAL_PIZZA_STATE = {
     pizza: null,
@@ -52,7 +51,7 @@ const PizzaSettingsHandler = ({ settings, item }) => {
         ...styles,
         [style]: false
       }), {}),
-    addOns: addOnList.reduce((addOns, { food_name }) => ({
+    addOns: menu[addOns][0].reduce((addOns, { food_name }) => ({
         ...addOns,
         [food_name]: false
       }), {}),
@@ -73,7 +72,7 @@ const PizzaSettingsHandler = ({ settings, item }) => {
     let [ pizzaSize ] = Object.keys(pizzaState.size).filter(size => pizzaState.size[size]);
 
     if (pizzaSize && pizzaState.pizza) {
-      orderDispatch({
+      menuDispatch({
         type: "PIZZA_SET_PRICE",
         payload: parseFloat(pizzaSize === "small" ? pizzaState.pizza.small_price : pizzaState.pizza.large_price)
       })
@@ -153,7 +152,7 @@ const PizzaSettingsHandler = ({ settings, item }) => {
         <Label sm={3}>Add-ons</Label>
         <Col sm={9}>
           {
-            addOnList.map(({ food_name }) => <CustomInput 
+            menu[addOns][0].map(({ food_name }) => <CustomInput 
               type="checkbox" 
               id={food_name} 
               key={food_name} 
@@ -171,53 +170,48 @@ const PizzaSettingsHandler = ({ settings, item }) => {
 };
 
 const SettingsHandler = ({ settings, item }) => {
-  const { menuState: { menu }, orderDispatch } = useContext(MenuContext);
+  const { menuState, menuDispatch } = useContext(MenuContext);
 
-  const { size, addOns } = settings.triggerModal;
-  const addOnList = addOns && menu[addOns][0];
+  // const handleChange = e => orderDispatch({
+  //   type: "ORDER_SET_SIZE",
+  //   payload: {
+  //     itemPrice: parseFloat(item[e.target.getAttribute("data-price")]),
+  //     size: e.target.id
+  //   }
+  // });
 
-  const handleChange = e => orderDispatch({
-    type: "ORDER_SET_SIZE",
-    payload: {
-      itemPrice: parseFloat(item[e.target.getAttribute("data-price")]),
-      size: e.target.id
-    }
+  const defaultOrder = INITIAL_ORDER_STATE(settings.triggerModal.size, settings.triggerModal.addOns)
+
+  const handleChange = state => e => menuDispatch({
+    type: "UPDATE_ORDER",
+    payload: correctedPayload(e.target.name)(stateUpdate(defaultOrder, e.target.id, true))
   });
 
-  const handleChangeAddOns = e => {
-    orderDispatch({
-      type: e.target.checked ? "ORDER_SET_ADDONS" : "ORDER_REMOVE_ADDONS",
-      payload: {
-        addOnId: e.target.id, 
-        addOnPrice: parseFloat(addOnList[e.target.id - 1].small_price)
-      }
-    });
-  };
+  const handleChangeSize =  () => {}//handleChange(INITIAL_SETTING_STATE.size);
+  const handleChangeAddOns = handleChange(menuState.addOns);
     
   return (
     <Form>
+      <FormGroup row>
+        <Label sm={3}>Size</Label>
+        <Col sm={9}>
+          <CustomInput type="radio" selected={menuState.size["small"]} name="size" id="small" label="Small" disabled={!item.small_price} onChange={handleChange} />
+          <CustomInput type="radio" selected={menuState.size["large"]} name="size" id="large" label="Large" onChange={handleChangeSize} />
+        </Col>
+      </FormGroup>
       {
-        size ? (
-          <FormGroup row>
-            <Label sm={3}>Size</Label>
-            <Col sm={9}>
-              <CustomInput type="radio" data-price="small_price" name="size" id="small" label="Small" disabled={!item.small_price} onChange={handleChange} />
-              <CustomInput type="radio" data-price="large_price" name="size" id="large" label="Large" onChange={handleChange} />
-            </Col>
-          </FormGroup>
-        ) : null
-      }
-      {
-        addOns ? (
+        menuState.addOns ? (
           <FormGroup row>
             <Label sm={3}>Add-ons</Label>
             <Col sm={9}>
               {
-                addOnList.map(({ id, food_name }) => <CustomInput 
+                Object.keys(menuState.addOns).map(key => <CustomInput 
                   type="checkbox" 
-                  id={id} 
-                  key={food_name} 
-                  label={food_name} 
+                  id={key} 
+                  key={key} 
+                  label={key} 
+                  name="addOns"
+                  selected={menuState.addOns[key]}
                   onChange={handleChangeAddOns}                 
                 />)
               }
@@ -234,34 +228,27 @@ const SettingsHandler = ({ settings, item }) => {
 
 const MenuModal = () => {
   const { addItem } = useContext(CartContext);
-  const { menuState, menuDispatch, orderState, orderDispatch } = useContext(MenuContext);
-  const { modal, modalBody: { item, settings } } = menuState;
+  const { menuState, menuDispatch } = useContext(MenuContext);
+  const { modal: { isToggled, size, style, addOns }, order } = menuState;
+  const { item, totalPrice } = order;
   
   const toggleModal = () => menuDispatch({ type: "TOGGLE_MODAL" });
 
   const handleClick = () => {
-    addItem(orderState);
+    // addItem(menuState.order);
     toggleModal();
   };
 
   return (
-    <Modal isOpen={modal} toggle={ toggleModal }>
-      <ModalHeader toggle={ toggleModal }>{ item && item.food_name }</ModalHeader>
+    <Modal isOpen={isToggled} toggle={toggleModal}>
+      <ModalHeader toggle={toggleModal}>{ item && item.food_name }</ModalHeader>
       <ModalBody>
         {
-          settings && settings.name === "Pizzas" ? 
-              <PizzaSettingsHandler
-                settings={settings}
-                item={item}
-              /> : 
-              <SettingsHandler 
-                settings={settings}
-                item={item}
-              />
+          item && item.name === "Pizzas" ? <PizzaSettingsHandler item={item} /> : <SettingsHandler item={item} />
         }
       </ModalBody>
       <ModalFooter>
-        { orderState.totalPrice == 0 ? null : <span>{ "$ " + orderState.totalPrice }</span> }
+        { totalPrice == 0 ? null : <span>{ "$ " + totalPrice }</span> }
         <Button color="primary" onClick={ handleClick }>Yes I want this!</Button>
       </ModalFooter>
     </Modal>
