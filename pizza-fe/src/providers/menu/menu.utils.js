@@ -20,3 +20,18 @@ export const fetchMenu = () => {
       return responses[0];
     });
 };
+
+export const OrderInitializer = (size, addOns, styles) => ({
+  size: size ? {
+    small: false,
+    large: false
+  }: false,
+  addOns: addOns ? addOns.reduce((addOns, { food_name }) => ({
+    ...addOns,
+    [food_name]: false
+  }), {}) : false,
+  style: styles ? styles.reduce((styles, style) => ({
+    ...styles,
+    [style]: false
+  }), {}) : false
+});

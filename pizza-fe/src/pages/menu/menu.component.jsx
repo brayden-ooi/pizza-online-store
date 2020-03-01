@@ -9,8 +9,8 @@ import { fetchMenu } from "../../providers/menu/menu.utils";
 
 
 const MenuPage = () => {
-  const { menuState, menuDispatch } = useContext(MenuContext);
-  const { menu, menuOrder } = menuState;
+  const { menuState, menuDispatch, menuOrder } = useContext(MenuContext);
+  const { menu } = menuState;
   
   useEffect(() => {
     Promise.resolve(fetchMenu()).then(menu => menuDispatch({ 
@@ -19,16 +19,12 @@ const MenuPage = () => {
     })
   )}, []);
 
-  useEffect(() => {
-    console.log(menuState);
-  }, [menuState]);
-    
   return (
     <div>
-      {/* <MenuModal /> */}
       {
         menu ? menu.map((menuCollection, index) => <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />) : null
       }
+      <MenuModal />
     </div>
   );
 };

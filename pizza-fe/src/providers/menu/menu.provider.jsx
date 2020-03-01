@@ -1,90 +1,20 @@
 import React, { useEffect, useReducer, createContext } from 'react';
 
+import MENU_SETTINGS from "./menu.settings";
 
-const MENU_SETTINGS = {
-  "DinnerPlatter": {
-    name: "Dinner Platters",
-    display: true,
-    triggerModal: {
-      size: true
-    }
-  },
-  "Pasta": {
-    name: "Pastas",
-    display: true,
-    triggerModal: false
-  },
-  "Pizza": {
-    name: "Pizzas",
-    display: true,
-    triggerModal: {
-      size: true,
-      styles: ["cheese", "toppings", "special"],
-      addOns: "Topping"
-    },
-    replaceWith : [
-      {
-        id: 1, 
-        food_name: "Regular Pizza",
-        pizza_type: "RG",
-        small_price: "12.70"
-      }, 
-      {
-        id: 2,
-        food_name: "Sicilian Pizza",
-        pizza_type: "SC",
-        small_price: "24.45"
-      }
-    ]
-  },
-  "Salad": {
-    name: "Salads",
-    display: true,
-    triggerModal: false
-  },
-  "Subs": {
-    name: "Subs",
-    display: true,
-    triggerModal: {
-      size: true,
-      addOns: "SubsAddition"
-    }
-  },
-  "SubsAddition": {
-    name: "Add Ons",
-    display: false,
-    triggerModal: false
-  },
-  "Topping": {
-    name: "Toppings",
-    display: true,
-    triggerModal: false,
-    disabled: true
-  },
-}
 
 const INITIAL_STATE = {
-  menuOrder: ["Pizza", "Topping", "Subs", "Pasta", "Salad", "DinnerPlatter", "SubsAddition"],
-  initialOrderState: (size, addOns, addOnsList) => ({
-    size: size ? {
-      small: false,
-      large: false
-    }: false,
-    addOns: addOns ? addOnsList.reduce((addOns, { food_name }) => ({
-      ...addOns,
-      [food_name]: false
-    }), {}) : false
-  }),
   menu: null,
   modal: {
     isToggled: false,
     size: false,
     style: false,
-    addOns: false
+    addOns: false,
+    addOnsDisabled: false
   },
-  settings: MENU_SETTINGS,
   order: {
     item: null,
+    mapKey: null,
     totalPrice: 0,
     itemPrice: 0,
     addOnPrice: 0,
@@ -94,6 +24,11 @@ const INITIAL_STATE = {
 
 const menuReducer = (state, action) => {
   switch (action.type) {
+    case "SET_MENU":
+      return {
+        ...state,
+        menu: action.payload
+      };
     case "TOGGLE_MODAL":
       return {
         ...state,
@@ -102,16 +37,27 @@ const menuReducer = (state, action) => {
           isToggled: !state.modal.isToggled
         }
       };
-    case "SET_MENU":
-      return {
-        ...state,
-        menu: action.payload
-      };
     case "ORDER_START":
       return {
         ...state,
-        modal: action.payload.modal,
-        order: action.payload.order
+        modal: {
+          ...state.modal,
+          isToggled: action.payload.modal.isToggled,
+          ...action.payload.modal.orderDefaults,
+          addOnsDisabled: false
+        },
+        order: {
+          ...state.order,
+          ...action.payload.order
+        }
+      };
+    case "UPDATE_ORDER":
+      return {
+        ...state,
+        modal: {
+          ...state.modal,
+          [action.payload.name]: action.payload.value
+        }
       };
     case "ORDER_SET_SIZE":
       return {
@@ -143,31 +89,42 @@ const menuReducer = (state, action) => {
           addOns: state.addOns.filter(item => item !==action.payload.addOnId)
         }
       };
-    case "PIZZA_SET_SIZE":
+    // case "PIZZA_SET_PRICE":
+    //   return {
+    //     ...state,
+    //     order: {
+    //       ...state.order,
+    //       itemPrice: action.payload,
+    //       totalPrice: (action.payload + state.order.addOnPrice).toFixed(2)
+    //     }
+    //   };
+    case "PIZZA_SET_STYLE":
       return {
         ...state,
-        order: {
-          ...state.order,
-          size: action.payload
+        // order: {
+        //   ...state.order,
+        //   item: action.payload.item,
+        // },
+        modal: {
+          ...state.modal,
+          style: action.payload.style,
+          addOnsDisabled: action.payload.addOnsDisabled,
+          addOns: action.payload.addOns
         }
       };
-    case "PIZZA_SET_PRICE":
+    case "PIZZA_SET_TOPPINGS":
       return {
         ...state,
         order: {
           ...state.order,
-          itemPrice: action.payload,
-          totalPrice: (action.payload + state.addOnPrice).toFixed(2)
+          pizza: action.payload.pizza,
+        },
+        modal: {
+          ...state.modal,
+          style: action.payload.style,
+          addOns: action.payload.addOns
         }
       };
-    case "UPDATE_ORDER":
-      return {
-        ...state,
-        order: {
-          ...state.order,
-          [action.payload.name]: action.payload.value
-        }
-      }
     default:
       return state;
   }
@@ -175,11 +132,15 @@ const menuReducer = (state, action) => {
 
 export const MenuContext = createContext({
   menuState: {},
-  menuDispatch: () => {}
+  menuDispatch: () => {},
+  menuOrder: {},
+  menuSettings: {}
 });
 
 const MenuProvider = ({ children }) => {
   const [menuState, menuDispatch] = useReducer(menuReducer, INITIAL_STATE);
+  const menuOrder = ["Pizza", "Topping", "Subs", "Pasta", "Salad", "DinnerPlatter", "SubsAddition"];
+  const menuSettings = MENU_SETTINGS;
 
   useEffect(() => {
     console.log(menuState);
@@ -188,7 +149,9 @@ const MenuProvider = ({ children }) => {
   return (
     <MenuContext.Provider value={{
       menuState,
-      menuDispatch
+      menuDispatch, 
+      menuOrder, 
+      menuSettings
     }}>
       { children }
     </MenuContext.Provider>

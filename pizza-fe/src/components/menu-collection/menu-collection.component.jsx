@@ -7,9 +7,8 @@ import { CardDeck } from "reactstrap";
 
 
 const MenuCollection = ({ menuCollection, mapKey }) => {
-  const { menuState } = useContext(MenuContext);
-  const { menuOrder, settings } = menuState;
-  const { name, display, replaceWith } = settings[menuOrder[mapKey]];
+  const { menuOrder, menuSettings } = useContext(MenuContext);
+  const { name, display, replaceWith } = menuSettings[menuOrder[mapKey]];
   const displayMenu = replaceWith || menuCollection;
 
   if (display) {
