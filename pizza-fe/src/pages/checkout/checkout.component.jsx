@@ -27,12 +27,17 @@ const CheckoutPage = () => {
         </thead>
         <tbody>
           {
-            cartItems.map(cartItem => 
-              <CheckoutItem key={cartItem.id} cartItem={cartItem} />
-            )
+            cartItems.map(cartItem => <CheckoutItem 
+              key={cartItem.size ? cartItem.size + cartItem.groupId + cartItem.id : cartItem.groupId.toString() + cartItem.id} 
+              cartItem={cartItem} 
+            />)
           }
         </tbody>
-        <div>TOTAL: ${cartTotal}</div>
+        <tfoot>
+          <tr>
+            <td>TOTAL: ${cartTotal.toFixed(2)}</td>
+          </tr>
+        </tfoot>
       </Table>
       <StripeCheckoutButton price={cartTotal} />
     </main>

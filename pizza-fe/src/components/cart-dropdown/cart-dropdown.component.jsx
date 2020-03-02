@@ -23,8 +23,11 @@ const CartDropdown = () => {
       <DropdownMenu right>
         <div>
           {cartItems.length ? (
-            cartItems.map(({ id, ...otherProps }) => (
-              <CartItem key={id} {...otherProps} />
+            cartItems.map(({ id, groupId, size, ...otherProps }) => (
+              <CartItem 
+                key={size ? size + groupId + id : groupId.toString() + id} 
+                {...otherProps} 
+              />
             ))
           ) : (
             <DropdownItem>Your cart is empty</DropdownItem>
