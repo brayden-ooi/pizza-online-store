@@ -19,9 +19,11 @@ export const CartContext = createContext({
   cartTotal: 0
 });
 
+const INITIAL_CART_STATE = JSON.parse(window.localStorage.getItem("cart")) || [];
+
 const CartProvider = ({ children }) => {
   const [hidden, setHidden] = useState(true);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(INITIAL_CART_STATE);
   const [cartItemsCount, setCartItemsCount] = useState(0);
   const [cartTotal, setCartTotal] = useState(0);
 
@@ -34,6 +36,7 @@ const CartProvider = ({ children }) => {
   useEffect(() => {
     setCartItemsCount(getCartItemsCount(cartItems));
     setCartTotal(getCartTotal(cartItems));
+    window.localStorage && window.localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
   return (

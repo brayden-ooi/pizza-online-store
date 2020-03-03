@@ -39,7 +39,7 @@ const CheckoutPage = () => {
           </tr>
         </tfoot>
       </Table>
-      <StripeCheckoutButton price={cartTotal} />
+      <StripeCheckoutButton price={cartTotal.toFixed(2)} />
     </main>
   );
 };

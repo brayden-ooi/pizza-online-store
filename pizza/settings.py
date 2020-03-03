@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'i0&iq&e9u9h6(4_7%pt2s9)f=c$kso=k$c$w@fi9215s=1q0^d'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -59,11 +59,11 @@ MIDDLEWARE = [
 
 CORS_ALLOW_CREDENTIALS = True
 
-# CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = True
 
-CORS_ORIGIN_WHITELIST = ['http://192.168.43.6:3000']
+# CORS_ORIGIN_WHITELIST = ['http://192.168.43.6:3000']
 
-CSRF_TRUSTED_ORIGINS = ['http://192.168.43.6:3000']
+# CSRF_TRUSTED_ORIGINS = ['http://192.168.43.6:3000']
 
 ROOT_URLCONF = 'pizza.urls'
 
@@ -141,3 +141,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ]
 }
+
+STRIPE_PUBLISHABLE_KEY = 'pk_test_5rN11GjkSP6ayB3NaS4l9EUu00vPNVmQXr'
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
