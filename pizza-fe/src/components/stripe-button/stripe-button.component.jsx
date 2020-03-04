@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 
-const StripeCheckoutButton = ({ price }) => {
+import { CartContext } from "../../providers/cart/cart.provider";
+
+
+const StripeCheckoutButton = ({ price, cartItems }) => {
+  const { clearCart } = useContext(CartContext);
+  console.log(cartItems);
   const priceForStripe = Math.round(price * 100);
   const publishableKey = 'pk_test_5rN11GjkSP6ayB3NaS4l9EUu00vPNVmQXr';
 
@@ -13,11 +18,12 @@ const StripeCheckoutButton = ({ price }) => {
       },
       body: JSON.stringify({
         token,
-        amount: priceForStripe
+        amount: priceForStripe,
+        order: cartItems
       })
     }).then(response => response.json())
     .then(response => alert("Payment successful" + response))
-      .catch(error => console.log(error));
+    .catch(error => console.log(error));
   };
 
   return (

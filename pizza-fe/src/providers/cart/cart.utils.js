@@ -41,8 +41,8 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
 };
 
 export const filterItemFromCart = (cartItems, item) =>
-  cartItems.filter(cartItem => cartItem.id !== item.id && 
-                    cartItem.groupId !== item.groupId &&
+  cartItems.filter(cartItem => cartItem.id !== item.id || 
+                    cartItem.groupId !== item.groupId ||
                     cartItem.size !== item.size);
 
 export const getCartItemsCount = cartItems =>

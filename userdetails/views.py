@@ -47,12 +47,14 @@ def api_register(request):
 		for detail, detail_value in request.data.items():
 			setattr(new_user_profile, detail, detail_value)
 
+		token = Token.objects.get(user=user)
+		new_user_profile(token=token.key)
+
 		new_user_profile.save()
 
 		login(request, new_user)
 		
 		serializer = UserSerializer(new_user, context={'request': request})
-		token = Token.objects.get(user=user)
 
 		return Response({ "user": serializer.data, "token": token.key }, status=status.HTTP_201_CREATED)
 	except:

@@ -14,6 +14,10 @@ class UserProfile(models.Model):
   city = models.CharField(max_length=64, default="Cambridge")
   zip_code = models.CharField(max_length=5, default="02128")
   state = models.CharField(max_length=64, default="Massachusetts")
+  token = models.CharField(max_length=64)
+
+  def __str__(self):
+    return self.user.username
 
 # user model extension hook
 @receiver(post_save, sender=User)

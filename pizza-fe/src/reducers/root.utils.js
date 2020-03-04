@@ -1,4 +1,4 @@
-export const API_HOST = "http://192.168.43.6:8000/api/";
+export const API_HOST = "http://localhost:8000/api/";
 
 export const userHandle = path => async userCredentials => {
   const request = await fetch(`${API_HOST}${path}`, {

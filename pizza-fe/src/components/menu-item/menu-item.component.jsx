@@ -43,7 +43,7 @@ const MenuItem = ({ menuItem, mapKey }) => {
         id,
         name: food_name,
         price,
-        groupId: mapKey
+        groupId: menuOrder[mapKey]
       });
     }
   }

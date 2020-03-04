@@ -27,7 +27,7 @@ const MenuModal = () => {
       price: order.totalPrice,
       itemPrice: order.itemPrice,
       addOns: order.addOns.map(key => addOnsList[key]),
-      groupId: mapKey
+      groupId: menuOrder[mapKey]
     });
     toggleModal();
   };
