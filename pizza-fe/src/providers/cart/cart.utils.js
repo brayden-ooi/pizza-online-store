@@ -26,9 +26,9 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
   );
 
   if (existingCartItem.quantity === 1) {
-    return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id && 
-      cartItem.groupId === cartItemToRemove.groupId &&
-      cartItem.size === cartItemToRemove.size);
+    return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id ||
+      cartItem.groupId !== cartItemToRemove.groupId ||
+      cartItem.size !== cartItemToRemove.size);
   }
 
   return cartItems.map(cartItem =>

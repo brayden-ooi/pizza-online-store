@@ -33,10 +33,10 @@ const CheckoutItem = ({ cartItem }) => {
           </span>
         </td>
         <td className="price">
-          <span id="itemPrice">{ price }</span>
+          <span id="itemPrice">{ (price * quantity).toFixed(2) }</span>
           {
             itemPrice ? <UncontrolledTooltip placement="top" target="itemPrice">
-              { itemPrice }
+              { itemPrice * quantity.toFixed(2) }
             </UncontrolledTooltip> 
             : null
           }
@@ -51,15 +51,15 @@ const CheckoutItem = ({ cartItem }) => {
         </td>
       </tr>
       {
-        addOns ? addOns.map(item => 
+        addOns?.map(item => 
         <tr className="checkout-item addOns">
           <td></td>
           <td>{ item.food_name }</td>
           <td>-</td>
           <td>-</td>
-          <td>{ item.small_price || null }</td>
+          <td>{ (item.small_price * quantity).toFixed(2) || null }</td>
           <td></td>
-        </tr>) : null
+        </tr>)
       }
     </>
   );

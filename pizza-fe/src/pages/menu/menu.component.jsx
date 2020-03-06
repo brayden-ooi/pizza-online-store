@@ -22,7 +22,7 @@ const MenuPage = () => {
   return (
     <div>
       {
-        menu ? menu.map((menuCollection, index) => <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />) : null
+        menu?.map((menuCollection, index) => <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />)
       }
       <MenuModal />
     </div>

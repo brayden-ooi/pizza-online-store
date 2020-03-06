@@ -1,0 +1,72 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+
+.order-page {
+  .loading-screen-container {
+    height: 725px;
+    display: flex; 
+    justify-content: center;
+
+    .image-container {
+      width: 500px;
+      height: 725px;
+      margin-right: 10px;
+      background-image: url("https://cdn.dribbble.com/users/2140642/screenshots/4301537/rodrigosloader.gif");
+      background-position: center center;
+      background-repeat: no-repeat;
+    }
+
+    .loading-text {
+      align-self: center;
+    }
+  }
+
+  .order-check {
+    color: $blue;
+    cursor: pointer;
+    padding-right: 20px;
+  
+    &::after {
+      content: " >";
+    }
+  
+    &:hover {
+      color: #0056b3;
+    }
+  }
+
+  .order-table {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1000px;
+  }
+
+  th {
+    text-align: center;
+  }
+}
+
+@media (max-width: 700px) {
+  .order-page {
+    .loading-screen-container {
+      height: 500px;
+      padding: 0 10px;
+
+      .image-container {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .order-table {
+    width: 100vw;
+
+    table {
+      width: 100vw;
+    }
+  }
+}

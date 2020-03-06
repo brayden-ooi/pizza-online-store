@@ -18,6 +18,7 @@ const MenuPage = lazy(() => import("./pages/menu/menu.component"));
 const SignInPage = lazy(() => import("./pages/sign-in/sign-in.component"));
 const RegisterPage = lazy(() => import("./pages/register/register.component"));
 const CheckoutPage = lazy(() => import("./pages/checkout/checkout.component"));
+const OrderPage = lazy(() => import("./pages/order/order.component"));
 
 
 function App() {
@@ -79,6 +80,14 @@ function App() {
               deniedPath="/signin"
             >
               <CheckoutPage />
+            </PrivateRoute>
+            <PrivateRoute 
+              exact 
+              path="/order"
+              condition={userState}
+              deniedPath="/signin"
+            >
+              <OrderPage />
             </PrivateRoute>
           </Suspense>
         </ErrorBoundary>

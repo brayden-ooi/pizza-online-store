@@ -24,13 +24,15 @@ const MENU_SETTINGS = {
         id: 1, 
         food_name: "Regular Pizza",
         pizza_type: "RG",
-        small_price: "12.70"
+        small_price: "12.70",
+        img_url: "https://cdn.apartmenttherapy.info/image/upload/f_auto,q_auto:eco,c_fit,w_760,h_950/k%2Farchive%2Fbd84ba2c08f32a70c1c3638c511dd271d365c611"
       }, 
       {
         id: 2,
         food_name: "Sicilian Pizza",
         pizza_type: "SC",
-        small_price: "24.45"
+        small_price: "24.45",
+        img_url: "https://i1.wp.com/www.lewdfoods.com/wp-content/uploads/2017/07/20160503-spicy-spring-pizza-recipe-39.jpg?resize=768%2C576&ssl=1"
       }
     ]
   },

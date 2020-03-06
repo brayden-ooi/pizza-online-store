@@ -4,13 +4,13 @@ from .models import Pizza, Topping, Subs, SubsAddition, Pasta, Salad, DinnerPlat
 
 
 class PizzaAdmin(admin.ModelAdmin):
-  list_display = ('food_name', 'pizza_type', 'pizza_styles', 'small_price', 'large_price')
+  list_display = ('food_name', 'pizza_type', 'pizza_styles', 'small_price', 'large_price', 'img_url')
 
 class NonSizedFoodAdmin(admin.ModelAdmin):
-  list_display = ('food_name', 'price')
+  list_display = ('food_name', 'price', 'img_url')
 
 class SizedFoodAdmin(admin.ModelAdmin):
-  list_display = ('food_name', 'small_price', 'large_price')
+  list_display = ('food_name', 'small_price', 'large_price', 'img_url')
 
 # Register your models here.
 admin.site.register(Pizza, PizzaAdmin)

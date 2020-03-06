@@ -1,42 +1,29 @@
 from django.contrib import admin
+from django.utils.html import format_html_join
+from django.utils.safestring import mark_safe
 
-from .models import Order, OrderedFood, OrderedPizza, OrderedPizzaToppings, OrderedSubs
+from .models import Order, OrderedFood
 
 
 class OrderAdmin(admin.ModelAdmin):
-  list_display = ('id', 'content', 'total_price', 'customer', 'time_ordered')
+  list_display = ('completed', 'paid', 'time_ordered', 'id', 'items', 'total_price', 'customer')
 
-  def content(self, obj):
-    return ", ".join([t.__str__() for t in obj.items_ordered.all()])
-
-class OrderedPizzaAdmin(admin.ModelAdmin):
-  list_display = ('id', 'order', 'pizza_type', 'topping')
-
-  def topping(self, obj):
-    return ", ".join([t.food_name for t in obj.toppings.all()])
-
-  def order(self, obj):
-    return obj.orders.all()[0].id
+  def items(self, obj):
+    return format_html_join(
+            mark_safe('<br>'),
+            '{}', ((t.__str__(),) for t in obj.items_ordered.all()),)
   
 class OrderedFoodAdmin(admin.ModelAdmin):
-  list_display = ('order', 'amount', 'content_type', 'content_object')
+  list_display = ('order', 'content_type', 'content_object', 'size', 'amount', 'itemPrice', 'addOnPrice', 'totalPrice')
 
-class OrderedPizzaToppingsAdmin(admin.ModelAdmin):
-  list_display = ('pizza', 'toppings', 'amount')
+  def size(self, obj):
+    if (obj.isSmall): return 'Small'
+    elif (obj.isSmall is not None): return 'Large'
+    else: return "-"
 
-class OrderedSubsAdmin(admin.ModelAdmin):
-  list_display = ('id', 'order', 'subs_type', 'subs_addition')
-
-  def order(self, obj):
-    return obj.orders.all()[0].id if obj.orders.all() else "None"
-
-  def subs_addition(self, obj):
-    return ", ".join([t.food_name for t in obj.subs_additions.all()]) if obj.subs_additions.all() else "None"
-
+  def totalPrice(self, obj):
+    return obj.itemPrice + (obj.addOnPrice or 0)
 
 # Register your models here.
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderedFood, OrderedFoodAdmin)
-admin.site.register(OrderedPizza, OrderedPizzaAdmin)
-admin.site.register(OrderedPizzaToppings, OrderedPizzaToppingsAdmin)
-admin.site.register(OrderedSubs, OrderedSubsAdmin)

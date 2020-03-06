@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 class Food(models.Model):
   food_name = models.CharField("food", max_length=64)
+  img_url = models.URLField(max_length=200, null=True)
 
   def __str__(self):
     return self.food_name

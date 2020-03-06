@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
+import { useHistory } from "react-router-dom";
 import StripeCheckout from 'react-stripe-checkout';
 
 import { CartContext } from "../../providers/cart/cart.provider";
 
 
 const StripeCheckoutButton = ({ price, cartItems }) => {
+  const history = useHistory();
   const { clearCart } = useContext(CartContext);
   console.log(cartItems);
   const priceForStripe = Math.round(price * 100);
@@ -18,12 +20,20 @@ const StripeCheckoutButton = ({ price, cartItems }) => {
       },
       body: JSON.stringify({
         token,
+        userToken: window.localStorage.getItem("token"),
         amount: priceForStripe,
         order: cartItems
       })
     }).then(response => response.json())
-    .then(response => alert("Payment successful" + response))
-    .catch(error => console.log(error));
+    .then(response => {
+      if (response) {
+        history.push("/order");
+        clearCart();
+      } else {
+        alert("Something has gone wrong. Please try again later.");
+        history.push("/");
+      }})
+    .catch(error => alert("Something has gone wrong. Please try again later."));
   };
 
   return (

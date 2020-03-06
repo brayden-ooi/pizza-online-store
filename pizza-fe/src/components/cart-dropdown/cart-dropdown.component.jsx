@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 
 import CartItem from "../cart-item/cart-item.component";
 
 import { CartContext } from "../../providers/cart/cart.provider";
 
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from "reactstrap";
+import "./cart-dropdown.styles.scss";
 
 
 const CartDropdown = () => {
@@ -16,21 +17,29 @@ const CartDropdown = () => {
   const toggle = () => setDropdownOpen(!dropdownOpen);
 
   return (
-    <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+    <Dropdown isOpen={dropdownOpen} toggle={toggle} className="cart-dropdown">
       <DropdownToggle>
         Dropdown
       </DropdownToggle>
       <DropdownMenu right>
         <div>
-          {cartItems.length ? (
-            cartItems.map(({ id, groupId, size, ...otherProps }) => (
+          {
+            cartItems.length ? cartItems.map(({ id, groupId, size, ...otherProps }) => (
               <CartItem 
                 key={size ? size + groupId + id : groupId.toString() + id} 
                 {...otherProps} 
               />
-            ))
-          ) : (
-            <DropdownItem>Your cart is empty</DropdownItem>
+            )) : (
+            <DropdownItem tag="div" className="empty-cart">
+              <div className="checkout-no-item">
+                <div className="image-container">
+                  <img src="https://image.flaticon.com/icons/png/512/16/16541.png"  />
+                </div>
+                <span className="text-muted text-center">
+                  You don't seem to have any cart items.<wbr/> Go to <Link to="/menu">our menu</Link> to begin ordering.
+                </span>
+              </div>
+            </DropdownItem>
           )}
         </div>
       <DropdownItem divider />
