@@ -14,8 +14,8 @@ const MenuCollection = ({ menuCollection, mapKey }) => {
   if (display) {
     return (
       <section>
-        <span>{ name }</span>
-        <CardDeck>
+        <p className="mb-2 h4 text-muted">{ name }</p>
+        <CardDeck className="mb-4">
           {
             displayMenu.map(menuItem => <MenuItem menuItem={menuItem} key={menuItem.id} mapKey={mapKey} />)
           }

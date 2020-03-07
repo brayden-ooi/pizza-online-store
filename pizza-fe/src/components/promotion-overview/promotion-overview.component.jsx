@@ -9,9 +9,10 @@ const PromotionOverview = () => {
   // TODO to be placed in backend, for admins to change in admin page
   const PromotionMaterials = [
     {
-      text: "Try it!",
+      text: "Sicilian Pizza?",
+      suppliText: "Click here to find out more!",
       img: false,
-      pathTo: "/menu"
+      pathTo: "https://www.pinocchiospizza.net/sicilian_vs_regular.html"
     },
     {
       text: "Buy 2 free 1!",
@@ -21,7 +22,8 @@ const PromotionOverview = () => {
     {
       text: "See more discount!",
       img: false,
-      pathTo: "/menu"
+      pathTo: "/menu",
+      display: <iframe width="400" height="200" src="https://www.youtube.com/embed/hoM7PJu6V-E" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     }
   ];
 

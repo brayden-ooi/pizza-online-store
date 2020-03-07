@@ -47,14 +47,19 @@ const ModalForm = ({ item, mapKey }) => {
       3: "3T" 
     };
 
-    const pizzaDeterminant = order.addOns.length || Object.keys(modal.style).filter(style => modal.style[style])[0];
+    const pizzaDeterminant = order.addOns.length || 
+      Object.keys(modal.style).filter(style => modal.style[style])[0];
+      
+    const pizzaResult = menu[menuOrder.indexOf("Pizza")].filter(pizza => 
+      pizza.pizza_type === item.pizza_type && 
+      pizza.pizza_styles === PIZZA_STYLES[pizzaDeterminant])[0];
 
     menuDispatch({
       type: "ORDER_SET_PIZZA",
-      payload: menu[menuOrder.indexOf("Pizza")].filter(pizza => 
-        pizza.pizza_type === item.pizza_type && 
-        pizza.pizza_styles === PIZZA_STYLES[pizzaDeterminant])[0] || 
-        order.item
+      payload: pizzaResult ? {
+        ...pizzaResult,
+        img_url: item.img_url
+      } : order.item
     });
   }, [order.addOns, modal.style]);
 

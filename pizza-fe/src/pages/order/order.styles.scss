@@ -68,5 +68,15 @@
     table {
       width: 100vw;
     }
+
+    .size {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .type {
+    display: none;
   }
 }

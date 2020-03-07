@@ -40,9 +40,9 @@ const OrderPage = () => {
             <Table hover>
               <thead>
                 <tr>
-                  <th>Item</th>
+                  <th className="type">Item</th>
                   <th>Name</th>
-                  <th>Size</th>
+                  <th className="size">Size</th>
                   <th>Quantity</th>
                   <th>Price</th>
                 </tr>
@@ -56,11 +56,11 @@ const OrderPage = () => {
               </tbody>
               <tfoot>
                 <tr>
+                  <td className="type" />
                   <td />
-                  <td />
-                  <td />
+                  <td className="size" />
                   <td className="text-right">TOTAL:</td>
-                  <td className="text-center">$ { pendingOrders.total_price }</td>
+                  <td className="text-center">{ pendingOrders.total_price }</td>
                 </tr>
               </tfoot>
             </Table>

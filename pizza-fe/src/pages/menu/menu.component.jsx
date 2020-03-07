@@ -7,6 +7,8 @@ import { MenuContext } from "../../providers/menu/menu.provider";
 
 import { fetchMenu } from "../../providers/menu/menu.utils";
 
+import "./menu.styles.scss";
+
 
 const MenuPage = () => {
   const { menuState, menuDispatch, menuOrder } = useContext(MenuContext);
@@ -20,12 +22,12 @@ const MenuPage = () => {
   )}, []);
 
   return (
-    <div>
+    <main className="menu-page">
       {
         menu?.map((menuCollection, index) => <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />)
       }
       <MenuModal />
-    </div>
+    </main>
   );
 };
 

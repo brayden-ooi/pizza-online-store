@@ -7,6 +7,7 @@ import { default as NavLink } from "../custom-navlink/custom-navlink.component";
 import { UserContext } from "../../providers/user/user.provider";
 
 import { Collapse, Navbar, NavbarBrand, Nav, NavItem, NavbarToggler } from "reactstrap";
+import "./header.styles.scss";
 
 
 const Header = () => {
@@ -16,10 +17,10 @@ const Header = () => {
   const toggleNavbar = () => setCollapsed(!collapsed);
   
   return (
-    <nav>
+    <nav className="header">
       <Navbar expand="md">
         <NavbarBrand href="/">
-          Pizza
+          <img src="logo_small.gif" alt="logo" />
         </NavbarBrand>
         <NavbarToggler onClick={toggleNavbar} className="mr-2" />
         <Collapse isOpen={!collapsed} navbar>

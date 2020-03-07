@@ -40,6 +40,7 @@ const MenuItem = ({ menuItem, mapKey }) => {
 
     if (!triggerModal) {
       addItem({
+        img_url: img_url,
         id,
         name: food_name,
         price,
@@ -50,15 +51,18 @@ const MenuItem = ({ menuItem, mapKey }) => {
 
   // need to account for price, small_price and items with no prices
   return (
-    <Card className="menu-item">
+    <Card className="menu-item mb-3">
       <CardImg top src={img_url || "300x200.svg"} alt="Card image cap" className="menu-item-image" />
-      <CardBody className="text-center">
-        <CardTitle>{ food_name }</CardTitle>
+      <CardBody>
+        <CardTitle className="menu-item-text">
+          <p style={ price || displayPrice ? null : { margin: "auto" } }>{ food_name }</p>
+          {
+            displayPrice && <p>{ price || displayPrice + "+" }</p>
+          }
+        </CardTitle>
         <CardText>
           {
-            displayPrice && <span>$ {price || displayPrice + "+"}</span>
-          }{
-            disabled || <Button onClick={ handleClick }>Add to cart</Button>
+            disabled || <Button className="menu-item-purchase" onClick={ handleClick }>Add to cart</Button>
           }
         </CardText>
       </CardBody>

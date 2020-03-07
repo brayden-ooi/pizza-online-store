@@ -3,8 +3,24 @@
   flex-basis: auto;
 
   .menu-item-image {
-    width: 300px;
+    width: 100%;
     height: 200px;
     object-fit: cover;
+  }
+
+  .menu-item-text {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .menu-item-purchase {
+    width: 100%;
+  }
+}
+
+@media (min-width: 700px) {
+  .menu-item-image {
+    max-width: 300px;
+    min-width: 300px;
   }
 }

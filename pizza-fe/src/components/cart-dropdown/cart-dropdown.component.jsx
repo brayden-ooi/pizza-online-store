@@ -18,11 +18,15 @@ const CartDropdown = () => {
 
   return (
     <Dropdown isOpen={dropdownOpen} toggle={toggle} className="cart-dropdown">
-      <DropdownToggle>
-        Dropdown
+      <DropdownToggle 
+        tag="div"
+        data-toggle="dropdown"
+        aria-expanded={dropdownOpen}
+      >
+        <img src="cart-icon.png" className="cart-icon" />
       </DropdownToggle>
       <DropdownMenu right>
-        <div>
+        <div className="checkout-item">
           {
             cartItems.length ? cartItems.map(({ id, groupId, size, ...otherProps }) => (
               <CartItem 
@@ -30,10 +34,10 @@ const CartDropdown = () => {
                 {...otherProps} 
               />
             )) : (
-            <DropdownItem tag="div" className="empty-cart">
+            <DropdownItem tag="div">
               <div className="checkout-no-item">
                 <div className="image-container">
-                  <img src="https://image.flaticon.com/icons/png/512/16/16541.png"  />
+                  <img src="https://image.flaticon.com/icons/png/512/16/16541.png" alt="empty-cart" />
                 </div>
                 <span className="text-muted text-center">
                   You don't seem to have any cart items.<wbr/> Go to <Link to="/menu">our menu</Link> to begin ordering.

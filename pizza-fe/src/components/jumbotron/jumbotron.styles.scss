@@ -1,8 +1,39 @@
 .jumbotron-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+  // .image-container {
+  //   height: 320px;
+  //   width: 600px;
+  //   overflow-y: hidden;
 
-.jumbotron-text-content {
-  grid-column: 1;
+  //   img {
+  //     margin-top: -140px;
+  //     height: 600px;
+  //     width: 600px;
+  //     object-fit: center;
+  //   }
+  // }
+  .jumbotron-header {
+    font-size: 160px;
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+
+    img {
+      height: 160px;
+      margin: -25px 30px 0 30px;
+    }
+  }
+
+  .lead.jumbotron-text-followup {
+    font-family: 'Roboto', sans-serif; 
+  }
+
+  .jumbotron-bold-text {
+    font-size: 110px;
+    font-family: 'Anton', sans-serif;
+    text-transform: uppercase;
+
+    img {
+      width: 100px;
+      margin: -15px 0 0 -10px;
+    }
+  }
 }

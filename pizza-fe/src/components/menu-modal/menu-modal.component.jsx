@@ -21,6 +21,7 @@ const MenuModal = () => {
     const addOnsList = menu[menuOrder.indexOf(menuSettings[menuOrder[mapKey]].triggerModal.addOns)];
     
     addItem({
+      img_url: item.img_url,
       id: item.id,
       name: item.food_name,
       size: Object.keys(modal.size).filter(size => modal.size[size])[0],
@@ -41,7 +42,7 @@ const MenuModal = () => {
         <ModalForm item={item} mapKey={mapKey} />
         <ModalFooter>
           { totalPrice === 0 ? null : <span>{ "$ " + totalPrice.toFixed(2) }</span> }
-          <Button color="primary" onClick={ handleClick }>Yes I want this!</Button>
+          <Button color="primary" onClick={ handleClick } disabled={totalPrice === 0}>Yes I want this!</Button>
         </ModalFooter>
       </Modal>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, createContext } from 'react';
+import React, { useReducer, createContext } from 'react';
 
 import { INITIAL_MENU_STATE, menuReducer } from "../../reducers/menu/menu.reducer";
 
@@ -16,10 +16,6 @@ const MenuProvider = ({ children }) => {
   const [menuState, menuDispatch] = useReducer(menuReducer, INITIAL_MENU_STATE);
   const menuOrder = ["Pizza", "Topping", "Subs", "Pasta", "Salad", "DinnerPlatter", "SubsAddition"];
   const menuSettings = MENU_SETTINGS;
-
-  useEffect(() => {
-    console.log(menuState);
-  }, [menuState]);
 
   return (
     <MenuContext.Provider value={{

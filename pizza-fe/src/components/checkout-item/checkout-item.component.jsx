@@ -2,26 +2,24 @@ import React, { useContext } from "react";
 
 import { CartContext } from "../../providers/cart/cart.provider";
 
-import { UncontrolledTooltip } from "reactstrap";
-
 import './checkout-item.styles.scss';
 
 
 const CheckoutItem = ({ cartItem }) => {
-  const { name, imageUrl, price, itemPrice, quantity, size, addOns } = cartItem;
+  const { name, img_url, price, quantity, size, addOns } = cartItem;
   const { addItem, removeItem, clearItemFromCart } = useContext(CartContext);
 
   return (
     <>
       <tr className="checkout-item">
-        <td>
+        <td className="image">
           <div className="image-container">
-            <img src={ imageUrl } alt="item" />
+            <img src={ img_url } alt="item" />
           </div>
         </td>
-        <td>{ name }</td>
-        <td>{ size || "-" }</td>
-        <td>
+        <td className="checkout-item-detail">{ name }</td>
+        <td className="checkout-item-detail size">{ size || "-" }</td>
+        <td className="checkout-item-detail">
           <span className="quantity">
             <div className="arrow" onClick={() => removeItem(cartItem)}>
               &#10094;
@@ -32,16 +30,10 @@ const CheckoutItem = ({ cartItem }) => {
             </div>
           </span>
         </td>
-        <td className="price">
+        <td className="price checkout-item-detail">
           <span id="itemPrice">{ (price * quantity).toFixed(2) }</span>
-          {
-            itemPrice ? <UncontrolledTooltip placement="top" target="itemPrice">
-              { itemPrice * quantity.toFixed(2) }
-            </UncontrolledTooltip> 
-            : null
-          }
         </td>
-        <td>
+        <td className="checkout-item-detail">
           <div
             className="remove-button"
             onClick={() => clearItemFromCart(cartItem)}
@@ -53,9 +45,9 @@ const CheckoutItem = ({ cartItem }) => {
       {
         addOns?.map(item => 
         <tr className="checkout-item addOns">
-          <td></td>
+          <td className="image"></td>
           <td>{ item.food_name }</td>
-          <td>-</td>
+          <td className="size">-</td>
           <td>-</td>
           <td>{ (item.small_price * quantity).toFixed(2) || null }</td>
           <td></td>

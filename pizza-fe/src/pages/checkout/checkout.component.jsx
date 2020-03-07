@@ -49,9 +49,9 @@ const CheckoutPage = () => {
           <Table hover>
             <thead>
               <tr>
-                <th>Item</th>
+                <th className="image">Item</th>
                 <th>Name</th>
-                <th>Size</th>
+                <th className="size">Size</th>
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Remove</th>
@@ -67,11 +67,11 @@ const CheckoutPage = () => {
             </tbody>
             <tfoot>
               <tr>
+                <td className="image" />
                 <td />
-                <td />
-                <td />
+                <td className="size" />
                 <td className="text-right">TOTAL:</td>
-                <td className="text-center">$ {cartTotal.toFixed(2)}</td>
+                <td className="text-center">{cartTotal.toFixed(2)}</td>
                 <td>
                   <div className="checkout-payments">
                     <StripeCheckoutButton price={cartTotal.toFixed(2)} cartItems={cartItems} />
@@ -89,7 +89,7 @@ const CheckoutPage = () => {
       <main className="checkout-page">
         <div className="checkout-no-item">
           <div className="image-container">
-            <img src="https://image.flaticon.com/icons/png/512/16/16541.png"  />
+            <img src="https://image.flaticon.com/icons/png/512/16/16541.png" alt="empty-cart" />
           </div>
           <span className="text-muted text-center">
             You don't seem to have any cart items. Go to <Link to="/menu">our menu</Link> to begin ordering.
