@@ -1,4 +1,8 @@
 .jumbotron-container {
+
+  &.jumbotron {
+    background-color: white;
+  }
   // .image-container {
   //   height: 320px;
   //   width: 600px;
@@ -13,6 +17,7 @@
   // }
   .jumbotron-header {
     font-size: 160px;
+    color: #be0027;
     font-family: 'Anton', sans-serif;
     text-transform: uppercase;
 
@@ -28,12 +33,15 @@
 
   .jumbotron-bold-text {
     font-size: 110px;
+    color: #be0027;
     font-family: 'Anton', sans-serif;
     text-transform: uppercase;
 
     img {
-      width: 100px;
-      margin: -15px 0 0 -10px;
+      filter: invert(50%) sepia(100%) hue-rotate(307deg) saturate(10) contrast(1.5) brightness(0.8);
+      transform: rotate(-45deg);
+      width: 88px;
+      margin: 0 0 -10px -5px;
     }
   }
 }

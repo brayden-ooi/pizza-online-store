@@ -5,10 +5,21 @@ html {
 body {
   padding: 0 60px;
   overflow-x: hidden;
+  background-color: #239346;
 }
 
-a {
+main, nav, footer {
+  background-color: white;
+}
+
+a, .div-link {
+  color: #be0027;
   text-decoration: none;
+  cursor: pointer;
+}
+
+a:hover, .div-link:hover {
+  color: #ff0033;
 }
 
 * {

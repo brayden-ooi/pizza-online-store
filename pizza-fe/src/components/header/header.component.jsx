@@ -37,7 +37,7 @@ const Header = () => {
           </Nav>
           {
             userState ? (
-              <div onClick={() => userDispatch({ type: "LOGOUT_USER" })}>
+              <div className="div-link" onClick={() => userDispatch({ type: "LOGOUT_USER" })}>
                 Sign Out
               </div>
             ) : (

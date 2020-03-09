@@ -11,13 +11,20 @@ const PromotionItem = ({ text, suppliText, img, pathTo, display }) => (
         {
           display ? display : 
             <>
-              <CardImg width="100%" src={img || "/318x180.svg"} alt={text} />
+              <CardImg 
+                tag={() => <div style={{ 
+                  width: "400px", 
+                  height: "200px",
+  backgroundImage: 'linear-gradient(to bottom, #333333, transparent), url("https://cdn.tasteatlas.com/images/dishes/45a5e559c33a4d4ebd70851df05f5061.jpg?mw=1300")',
+  backgroundSize: "cover"
+                }} />}
+                width="100%" 
+                // src={img || "/318x180.svg"} 
+                alt={text} 
+                className="promotion-card-image" />
               <CardImgOverlay>
-                <CardTitle>{ text }</CardTitle>
+                <CardTitle className="promotion-card-title">{ text }</CardTitle>
                 <CardText>{ suppliText }</CardText>
-                <CardText>
-                  <small className="text-muted">Click to see more...</small>
-                </CardText>
               </CardImgOverlay>
             </>
         }

@@ -11,7 +11,7 @@ const PromotionOverview = () => {
     {
       text: "Sicilian Pizza?",
       suppliText: "Click here to find out more!",
-      img: false,
+      img: 'https://cdn.tasteatlas.com/images/dishes/45a5e559c33a4d4ebd70851df05f5061.jpg?mw=1300',
       pathTo: "https://www.pinocchiospizza.net/sicilian_vs_regular.html"
     },
     {
