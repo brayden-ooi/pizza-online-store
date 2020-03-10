@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { Jumbotron, Button } from 'reactstrap';
+import { Jumbotron } from 'reactstrap';
 
 import "./jumbotron.styles.scss";
 
@@ -31,7 +31,7 @@ const PizzaJumbotron = () => (
         </p>
         <p className="text-center jumbotron-bold-text">
           eat ‧ more ‧ pizz
-          <img src="pizza-icon.png" />
+          <img src="pizza-icon.png" alt="pizza-icon" />
           !
         </p>
       </section>

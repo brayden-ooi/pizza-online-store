@@ -5,6 +5,7 @@ import FormInput from "../../../components/form-input/form-input.component";
 import { stateUpdate, correctedPayload } from "../../../reducers/form/form.utils";
 
 import { Col, Row, Button, Form } from 'reactstrap';
+import "./register-details.styles.scss";
 
 
 const RegisterDetails = ({ detailPage, formDispatch, handleSubmit }) => {
@@ -24,7 +25,7 @@ const RegisterDetails = ({ detailPage, formDispatch, handleSubmit }) => {
     fullAddress: { address, city, state, zip_code } } = detailPage;
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="register-details">
       <Row form>
         <Col md={6}>
           <FormInput 

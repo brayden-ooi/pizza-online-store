@@ -1,0 +1,23 @@
+.register-main {
+  max-width: 500px;
+  margin: 0 auto;
+
+  .register-to {
+    display: flex;
+    justify-content: space-between;
+
+    .register-to-signin {
+      font-size: 14px;
+      display: block;
+    }
+
+    .register-to-next {
+      background-color: #be0027;
+      border: none;
+  
+      &:hover {
+        background-color: #ff0033;
+      }
+    }
+  }
+}

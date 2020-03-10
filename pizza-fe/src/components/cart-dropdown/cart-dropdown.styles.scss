@@ -20,9 +20,11 @@
       .image-container {
         color: grey;
         width: 40px;
+        height: 40px;
         margin-bottom: 12px;
     
         img {
+          margin: 0;
           width: 100%;
           height: 100%;
         }

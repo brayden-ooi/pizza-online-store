@@ -6,25 +6,25 @@ import "./promotion-item.styles.scss";
 
 const PromotionItem = ({ text, suppliText, img, pathTo, display }) => (
   <div>
-    <a href={pathTo} target="_blank">
-      <Card inverse className="promotion-card">
+    <a href={pathTo} target="_blank" rel="noopener noreferrer">
+      <Card inverse className="promotion-card mb-4">
         {
           display ? display : 
             <>
               <CardImg 
-                tag={() => <div style={{ 
-                  width: "400px", 
-                  height: "200px",
-  backgroundImage: 'linear-gradient(to bottom, #333333, transparent), url("https://cdn.tasteatlas.com/images/dishes/45a5e559c33a4d4ebd70851df05f5061.jpg?mw=1300")',
-  backgroundSize: "cover"
-                }} />}
+                tag={() => <div 
+                  className="promotion-card-image"
+                  style={{ 
+                    backgroundImage: 
+                    `linear-gradient(to bottom, #111111, transparent), url(${img || "./318x180.svg"})`,
+                  }} 
+                />}
                 width="100%" 
-                // src={img || "/318x180.svg"} 
-                alt={text} 
-                className="promotion-card-image" />
+                alt={text}
+              />
               <CardImgOverlay>
                 <CardTitle className="promotion-card-title">{ text }</CardTitle>
-                <CardText>{ suppliText }</CardText>
+                <CardText className="promotion-card-text">{ suppliText }</CardText>
               </CardImgOverlay>
             </>
         }

@@ -22,7 +22,8 @@ const CheckoutPage = () => {
     fetch("http://localhost:8000/api/order", {
       method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Token ${window.localStorage.getItem("token")}`
       },
       body: JSON.stringify({
         userToken: window.localStorage.getItem("token"),

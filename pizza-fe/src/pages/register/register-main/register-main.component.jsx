@@ -7,6 +7,7 @@ import { stateUpdate, correctedPayload } from "../../../reducers/form/form.utils
 import { validateUsernameAndEmail } from "../../../reducers/register/register.utils";
 
 import { Button, Form, FormFeedback } from 'reactstrap';
+import "./register-main.styles.scss";
 
 
 const RegisterMain = ({ mainPage, validationStatus, formDispatch, setDetailEntry }) => {
@@ -48,8 +49,8 @@ const RegisterMain = ({ mainPage, validationStatus, formDispatch, setDetailEntry
   };
 
   return (
-    <div>
-      <Form onSubmit={handleMain}>
+    <>
+      <Form onSubmit={handleMain} className="register-main">
         <FormInput
           name="username"
           placeholder="John"
@@ -96,10 +97,12 @@ const RegisterMain = ({ mainPage, validationStatus, formDispatch, setDetailEntry
           <FormFeedback>Passwords do not match.</FormFeedback>
         </FormInput>
 
-        <Button color="primary">Next</Button>
+        <div className="register-to">
+          <Link to="/login" className="register-to-signin">Existing user? Login here</Link>
+          <Button className="register-to-next">Next</Button>
+        </div>
       </Form>
-      <Link to="/login">Existing user? Login here</Link>
-    </div>
+    </>
   );
 };
 

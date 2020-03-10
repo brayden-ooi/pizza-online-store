@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
+import Loader from "../../components/loader/loader.component";
 import OrderItem from "../../components/order-item/order-item.component";
 
 import { UncontrolledCollapse, Table } from 'reactstrap';
@@ -8,6 +9,7 @@ import "./order.styles.scss";
 
 
 const OrderPage = () => {
+  const history = useHistory();
   const [ pendingOrders, setPendingOrders ] = useState(null);
   const fetchOrders = () => fetch("http://localhost:8000/api/pending_orders", {
     headers: {
@@ -17,8 +19,11 @@ const OrderPage = () => {
 
   useEffect(() => {
     Promise.resolve(fetchOrders())
-    .then(([response]) => setPendingOrders(response))
-    .catch(error => alert("There is a problem with the page. Please try again later."));
+    .then(response => setPendingOrders(response[response.length - 1]))
+    .catch(error => {
+      alert("There is a problem with the page. Please try again later.");
+      history.push("/");
+    });
   }, []);
 
   if (pendingOrders) {
@@ -28,15 +33,15 @@ const OrderPage = () => {
           pendingOrders.cooked ? (
             <span>Your order is prepared. Please come to pick it up!</span>
           ) : (
-            <div class="loading-screen-container">
+            <div className="loading-screen-container">
               <div className="image-container" />
               <span className="loading-text text-center">Your order is being prepared. Please wait for approximately 15 minutes.</span>
             </div>
           )
         }
-        <div id="toggler" className="text-right py-3 order-check">check out your order</div>
+        <div id="toggler" className="text-right py-3 order-check">check out your last order</div>
         <UncontrolledCollapse toggler="#toggler">
-          <div class="order-table" id="order-detail">
+          <div className="order-table" id="order-detail">
             <Table hover>
               <thead>
                 <tr>
@@ -76,7 +81,9 @@ const OrderPage = () => {
         </div>
       </main>
     )
-  } else return null;
+  } else return (
+    <Loader />
+  );
 };
 
 export default OrderPage;

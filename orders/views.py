@@ -5,19 +5,21 @@ from django.conf import settings
 from django.contrib.auth.models import User
 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Order, OrderedFood, OrderedPizza, OrderedPizzaToppings, OrderedSubs
 from .serializers import OrderSerializer
 
-import menu.models # import Pizza, Topping, Subs, SubsAddition, Pasta, Salad, DinnerPlatter
+import menu.models
 from userdetails.models import UserProfile
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 # Create your views here.
-@api_view(['GET'])
+@api_view()
+@permission_classes([IsAuthenticated])
 def pending_orders(request):
   user = User.objects.get(username=request.user)
   user_profile = UserProfile.objects.get(user=user)
@@ -28,7 +30,10 @@ def pending_orders(request):
   return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def order(request):
+  user = User.objects.get(username=request.user)
+  print(request.user)
   if request.method == 'POST':
     orders = request.data["order"]
 
@@ -101,7 +106,10 @@ def order(request):
   return Response(False)
 
 @api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
 def payment(request):
+  user = User.objects.get(username=request.user)
+  print(request.user)
   if request.method == 'POST':
     orders = request.data["order"]
 

@@ -1,7 +1,9 @@
 import React, { useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
 
 import MenuModal from "../../components/menu-modal/menu-modal.component";
 import MenuCollection from "../../components/menu-collection/menu-collection.component";
+import Loader from "../../components/loader/loader.component";
 
 import { MenuContext } from "../../providers/menu/menu.provider";
 
@@ -11,6 +13,7 @@ import "./menu.styles.scss";
 
 
 const MenuPage = () => {
+  const history = useHistory();
   const { menuState, menuDispatch, menuOrder } = useContext(MenuContext);
   const { menu } = menuState;
   
@@ -24,7 +27,9 @@ const MenuPage = () => {
   return (
     <main className="menu-page">
       {
-        menu?.map((menuCollection, index) => <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />)
+        menu?.map((menuCollection, index) => 
+          <MenuCollection menuCollection={menuCollection} key={index} mapKey={index} />) ||
+        <Loader />
       }
       <MenuModal />
     </main>

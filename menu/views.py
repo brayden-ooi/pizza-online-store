@@ -4,15 +4,11 @@ from urllib.parse import unquote
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
-# from rest_framework.permissions import IsAuthenticated
-# from django.contrib.auth.decorators import login_required
 
 import menu.models
 
 
 @api_view()
-# @login_required
-# @permission_classes([IsAuthenticated])
 def menu_list(request):
   print(request.user)
   
@@ -37,9 +33,7 @@ def menu_list(request):
     return Response(status=status.HTTP_404_NOT_FOUND)
 
 @api_view()
-# @permission_classes([IsAuthenticated])
 def menu_details(request, food_name):
-  print(request.user)
   try:
     food_model_name = unquote(food_name).title().replace(' ', '')
     food_model = getattr(menu.models, food_model_name)

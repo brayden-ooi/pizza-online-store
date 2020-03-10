@@ -1,0 +1,21 @@
+.error-page {
+  display: flex;
+  min-height: 700px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .error-image-container {
+    display: inline-block;
+    background-image: url("https://i.imgur.com/kZNTPqI.png");
+    background-size: cover;
+    background-position: center;
+    width: 40vh;
+    height: 40vh;
+  }
+
+  p {
+    margin-top: 40px;
+    color: #be0027;
+  }
+}

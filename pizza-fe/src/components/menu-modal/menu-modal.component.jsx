@@ -6,6 +6,7 @@ import { CartContext } from "../../providers/cart/cart.provider";
 import { MenuContext } from "../../providers/menu/menu.provider";
 
 import { Button, Modal, ModalHeader, ModalFooter } from 'reactstrap';
+import "./menu-modal.styles.scss";
 
 
 const MenuModal = () => {
@@ -37,12 +38,12 @@ const MenuModal = () => {
     const { food_name } = item;
 
     return (
-      <Modal isOpen={isToggled} toggle={toggleModal}>
+      <Modal isOpen={isToggled} toggle={toggleModal} className="menu-modal">
         <ModalHeader toggle={toggleModal}>{ food_name }</ModalHeader>
         <ModalForm item={item} mapKey={mapKey} />
         <ModalFooter>
           { totalPrice === 0 ? null : <span>{ "$ " + totalPrice.toFixed(2) }</span> }
-          <Button color="primary" onClick={ handleClick } disabled={totalPrice === 0}>Yes I want this!</Button>
+          <Button className="modal-button" onClick={ handleClick } disabled={totalPrice === 0}>Yes I want this!</Button>
         </ModalFooter>
       </Modal>
     );

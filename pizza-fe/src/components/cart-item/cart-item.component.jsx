@@ -6,7 +6,7 @@ import './cart-item.styles.scss';
 
 const CartItem = ({ img_url, name, quantity, price }) => (
   <DropdownItem tag="div" className="cart-item">
-    <img src={img_url} alt="item" />
+    <img src={img_url} alt="item" className="cart-image" />
     <div className="item-details">
       <span className="name">{name}</span>
       <span className="price">
@@ -16,4 +16,4 @@ const CartItem = ({ img_url, name, quantity, price }) => (
   </DropdownItem>
 );
 
-export default CartItem;
+export default React.memo(CartItem);

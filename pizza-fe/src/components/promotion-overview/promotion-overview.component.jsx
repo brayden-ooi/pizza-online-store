@@ -9,15 +9,16 @@ const PromotionOverview = () => {
   // TODO to be placed in backend, for admins to change in admin page
   const PromotionMaterials = [
     {
-      text: "Sicilian Pizza?",
+      text: "What's Sicilian Pizza?",
       suppliText: "Click here to find out more!",
       img: 'https://cdn.tasteatlas.com/images/dishes/45a5e559c33a4d4ebd70851df05f5061.jpg?mw=1300',
       pathTo: "https://www.pinocchiospizza.net/sicilian_vs_regular.html"
     },
     {
-      text: "Buy 2 free 1!",
-      img: false,
-      pathTo: "/menu"
+      text: "Want to dine in? Find us here!",
+      suppliText: "Feel the vibe and wonderful aroma of our pizzas",
+      img: 'http://4.bp.blogspot.com/_NKy3J_Ol6JU/TOFzNUIcnmI/AAAAAAAAANk/d1GCd69CUIY/s320/566.JPG',
+      pathTo: "https://www.pinocchiospizza.net/directions.html"
     },
     {
       text: "See more discount!",
@@ -31,7 +32,7 @@ const PromotionOverview = () => {
     // TODO create own scss
     <CardDeck style={{ justifyContent: "center" }}>
       {
-        PromotionMaterials.map(PromotionMaterial => <PromotionItem { ...PromotionMaterial } />)
+        PromotionMaterials.map((PromotionMaterial, index) => <PromotionItem { ...PromotionMaterial } key={index} />)
       }
     </CardDeck>
   );

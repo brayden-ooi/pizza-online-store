@@ -1,0 +1,15 @@
+.register-details {
+  margin: 0 auto;
+  max-width: 500px;
+
+  button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #be0027;
+    border: none;
+
+    &:hover {
+      background-color: #ff0033;
+    }
+  }
+}

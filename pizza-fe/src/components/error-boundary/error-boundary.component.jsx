@@ -1,5 +1,7 @@
 import React from "react";
 
+import ErrorContainer from "../error-container/error-container.component";
+
 
 class ErrorBoundary extends React.Component {
   constructor() {
@@ -21,9 +23,7 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasErrored) {
       return (
-        <div>
-          This is the error page!
-        </div>
+        <ErrorContainer />
       );
     }
 

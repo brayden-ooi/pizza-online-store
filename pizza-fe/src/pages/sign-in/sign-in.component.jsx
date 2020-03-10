@@ -9,6 +9,7 @@ import { loginPageReducer, INITIAL_STATE } from "../../reducers/login/login.redu
 import { userSignIn } from "../../reducers/user/user.utils";
 
 import { Button, Form, FormFeedback } from 'reactstrap';
+import "./sign-in.styles.scss";
 
 
 const SignInPage = () => {
@@ -36,28 +37,30 @@ const SignInPage = () => {
   };
 
   return (
-    <Form onSubmit={ handleSubmit }>
-      <FormInput
-        name="username"
+    <main className="signin-page">
+      <Form onSubmit={ handleSubmit }>
+        <FormInput
+          name="username"
 
-        value={ username }
-        onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
-      />
+          value={ username }
+          onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
+        />
 
-      <FormInput
-        name="password"
-        type="password"
+        <FormInput
+          name="password"
+          type="password"
 
-        invalid={ validationStatus }
+          invalid={ validationStatus }
 
-        value={ password }
-        onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
-      >
-        <FormFeedback>Username or password is wrong. Please try again.</FormFeedback>
-      </FormInput>
-      <Link to="/register">New user? Register here</Link>
-      <Button>Sign in</Button>
-    </Form>
+          value={ password }
+          onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }
+        >
+          <FormFeedback>Username or password is wrong. Please try again.</FormFeedback>
+        </FormInput>
+        <Link to="/register" className="signin-to-register mb-3">New user? Register here</Link>
+        <Button>Sign in</Button>
+      </Form>
+    </main>
   )
 };
 

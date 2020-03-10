@@ -19,7 +19,7 @@ const OrderItem = ({ amount, size, itemPrice, ordered_item_details, pizza, subs 
           <td>{ name }</td>
           <td className="size">-</td>
           <td>-</td>
-          <td>{ price || "-" }</td>
+          <td>{ price.toFixed(2) || "-" }</td>
         </tr>)
     }
   </>

@@ -1,12 +1,14 @@
-import React, { lazy, Suspense, useContext, useEffect } from 'react';
+import React, { lazy, Suspense, useContext } from 'react';
 import { Switch, Route } from "react-router-dom";
 
 import Header from "./components/header/header.component";
 import Footer from "./components/footer/footer.component";
 import ErrorBoundary from "./components/error-boundary/error-boundary.component";
-import PrivateRoute from "./components/private-route/private-route.component";
-import MenuProvider from "./providers/menu/menu.provider";
+import Loader from "./components/loader/loader.component";
 
+import PrivateRoute from "./components/private-route/private-route.component";
+
+import MenuProvider from "./providers/menu/menu.provider";
 import { UserContext } from "./providers/user/user.provider";
 
 // import { getCSRFToken } from "./providers/user/user.utils";
@@ -22,36 +24,14 @@ const OrderPage = lazy(() => import("./pages/order/order.component"));
 
 
 function App() {
-  const { userState } = useContext(UserContext);
-
-  useEffect(() => {
-
-    // if (token) {
-    //   const fetchData = async () => {
-    //     const fetchUserStatus = await fetch("http://localhost:8000/api/userstatus", {
-    //       credentials: 'include',
-    //       headers: {
-    //         'Authorization': `Token ${token}`,
-    //         'Content-Type': 'application/json',
-    //         'X-CSRFToken': await getCSRFToken()
-    //       },
-    //     }
-    //     );
-    //     const response = await fetchUserStatus.json();
-    //     await getCurrentUser(response || null);
-    //   };
-  
-    //   fetchData();
-    // }
-  }, []);
-  
+  const { userState } = useContext(UserContext);  
 
   return (
     <div>
       <Header />
       <Switch>
         <ErrorBoundary>
-          <Suspense fallback={<div>I am loading!</div>}>
+          <Suspense fallback={<Loader />}>
             <Route exact path="/"><HomePage /></Route>
             <Route exact path="/menu">
               <MenuProvider>

@@ -9,6 +9,8 @@ import { registerPageReducer, INITIAL_STATE } from "../../reducers/register/regi
 import { userRegister } from "../../reducers/register/register.utils";
 import { UserContext } from "../../providers/user/user.provider";
 
+import "./register.styles.scss";
+
 
 const RegisterPage = () => {
   const { path } = useRouteMatch();
@@ -36,7 +38,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
+    <main className="register-page">
       <Route exact path={path}>
         <RegisterMain 
           {...formState} 
@@ -54,7 +56,7 @@ const RegisterPage = () => {
           formDispatch={formDispatch}
         />
       </PrivateRoute>
-    </div>
+    </main>
   );
 };
 
