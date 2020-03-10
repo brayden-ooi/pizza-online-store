@@ -98,7 +98,7 @@ const RegisterMain = ({ mainPage, validationStatus, formDispatch, setDetailEntry
         </FormInput>
 
         <div className="register-to">
-          <Link to="/login" className="register-to-signin">Existing user? Login here</Link>
+          <Link to="/signin" className="register-to-signin">Existing user? Login here</Link>
           <Button className="register-to-next">Next</Button>
         </div>
       </Form>

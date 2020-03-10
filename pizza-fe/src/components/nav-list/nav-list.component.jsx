@@ -3,20 +3,15 @@ import React from "react";
 import { Nav, NavItem, NavLink } from 'reactstrap';
 
 
-const NavList = Directory => (
+const NavList = ({ directory }) => (
   <Nav vertical>
-    <NavItem>
-      <NavLink href="/menu">Menu</NavLink>
-    </NavItem>
-    <NavItem>
-      <NavLink href="#">Link</NavLink>
-    </NavItem>
-    <NavItem>
-      <NavLink href="#">Another Link</NavLink>
-    </NavItem>
-    <NavItem>
-      <NavLink disabled href="#">Disabled Link</NavLink>
-    </NavItem>
+    {
+      directory.map(([name, address], index) => (
+        <NavItem key={index}>
+          <NavLink href={ address }>{ name }</NavLink>
+        </NavItem>
+      ))
+    }
   </Nav>
 );
 

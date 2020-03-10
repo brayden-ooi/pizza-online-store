@@ -10,6 +10,7 @@ import PrivateRoute from "./components/private-route/private-route.component";
 
 import MenuProvider from "./providers/menu/menu.provider";
 import { UserContext } from "./providers/user/user.provider";
+import ErrorContainer from './components/error-container/error-container.component';
 
 // import { getCSRFToken } from "./providers/user/user.utils";
 
@@ -69,6 +70,10 @@ function App() {
             >
               <OrderPage />
             </PrivateRoute>
+            <Route exact path="/about"><ErrorContainer /></Route>
+            <Route exact path="/contact"><ErrorContainer /></Route>
+            <Route exact path="/promo"><ErrorContainer /></Route>
+            <Route exact path="/delivery"><ErrorContainer /></Route>
           </Suspense>
         </ErrorBoundary>
       </Switch>
