@@ -39,7 +39,7 @@ const Header = () => {
             </NavItem>
           </Nav>
           {
-            userState?.user ? (
+            userState?.token ? (
               <div className="div-link" onClick={() => userDispatch({ type: "LOGOUT_USER" })}>
                 Sign Out
               </div>
