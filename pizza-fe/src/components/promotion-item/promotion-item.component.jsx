@@ -15,6 +15,7 @@ const PromotionItem = ({ text, suppliText, img, pathTo, display }) => (
                 tag={() => <div 
                   className="promotion-card-image"
                   style={{ 
+                    minWidth: "100%",
                     backgroundImage: 
                     `linear-gradient(to bottom, #111111, transparent), url(${img || "./318x180.svg"})`,
                   }} 

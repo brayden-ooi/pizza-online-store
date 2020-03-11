@@ -1,10 +1,10 @@
 import { addToken, removeToken } from "./user.utils";
 
 
-export const INITIAL_STATE = window.localStorage.getItem("token") ? {
+export const INITIAL_STATE =  {
   user: null,
-  token: window.localStorage.getItem("token")
-} : null;
+  token: window.localStorage.getItem("token") || null
+};
 
 export const userReducer = (state, action) => {
   switch (action.type) {

@@ -50,7 +50,7 @@ const SignInPage = () => {
           name="password"
           type="password"
 
-          invalid={ validationStatus }
+          invalid={ !!validationStatus }
 
           value={ password }
           onChange={ event => formDispatch({ type: "FORM_CHANGE", payload: event.target }) }

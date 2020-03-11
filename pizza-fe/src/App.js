@@ -25,7 +25,7 @@ const OrderPage = lazy(() => import("./pages/order/order.component"));
 
 
 function App() {
-  const { userState } = useContext(UserContext);  
+  const { userState: { token } } = useContext(UserContext);  
 
   return (
     <div>
@@ -42,14 +42,14 @@ function App() {
             <PrivateRoute 
               exact 
               path="/signin" 
-              condition={!userState}
+              condition={!token}
               deniedPath="/"
             >
               <SignInPage />
             </PrivateRoute>
             <PrivateRoute 
               path="/register"
-              condition={!userState}
+              condition={!token}
               deniedPath="/"
             >
               <RegisterPage />
@@ -57,7 +57,7 @@ function App() {
             <PrivateRoute 
               exact 
               path="/checkout"
-              condition={userState}
+              condition={token}
               deniedPath="/signin"
             >
               <CheckoutPage />
@@ -65,7 +65,7 @@ function App() {
             <PrivateRoute 
               exact 
               path="/order"
-              condition={userState}
+              condition={token}
               deniedPath="/signin"
             >
               <OrderPage />

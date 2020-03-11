@@ -22,7 +22,10 @@ const Header = () => {
         <NavbarBrand href="/">
           <img src="logo_small.gif" alt="logo" />
         </NavbarBrand>
-        <NavbarToggler onClick={toggleNavbar} className="mr-2" />
+        <NavbarToggler className="mr-2" tag={() => 
+        <div onClick={toggleNavbar}>
+          <img src="/burger-icon.png" className="header-burger" />
+        </div>} />
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
@@ -36,7 +39,7 @@ const Header = () => {
             </NavItem>
           </Nav>
           {
-            userState ? (
+            userState?.user ? (
               <div className="div-link" onClick={() => userDispatch({ type: "LOGOUT_USER" })}>
                 Sign Out
               </div>

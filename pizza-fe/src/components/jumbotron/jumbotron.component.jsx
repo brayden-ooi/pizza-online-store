@@ -10,11 +10,11 @@ const PizzaJumbotron = () => (
   <Jumbotron className="jumbotron-container">
     <section className="jumbotron-text-content">
       <h1 className="jumbotron-header text-center">
-        50 ‧ 
-        <Link to="/menu">
+        50 <span className="jumbotron-mobile-none">‧ </span> 
+        <Link to="/menu" className="jumbotron-mobile-none">
           <img src="logo_small.gif" alt="logo" />
         </Link>
-         ‧ years
+        <span className="jumbotron-mobile-none"> ‧</span>  years
       </h1>
         <p className="lead text-center jumbotron-text-followup">
           That's right! Pinocchio's <em>50 years</em> in business! 
@@ -27,9 +27,9 @@ const PizzaJumbotron = () => (
           We deliver them <em>wherever</em> you want! <br />
           Pizza for everyone!
           So start <Link to="/menu">ordering now</Link>! 
-          Oh, and always remember:
+          <span className="jumbotron-mobile-none"> Oh, and always remember:</span>
         </p>
-        <p className="text-center jumbotron-bold-text">
+        <p className="text-center jumbotron-bold-text jumbotron-mobile-none">
           eat ‧ more ‧ pizz
           <img src="pizza-icon.png" alt="pizza-icon" />
           !

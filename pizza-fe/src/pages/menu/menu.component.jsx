@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
 
 import MenuModal from "../../components/menu-modal/menu-modal.component";
 import MenuCollection from "../../components/menu-collection/menu-collection.component";
@@ -13,7 +12,6 @@ import "./menu.styles.scss";
 
 
 const MenuPage = () => {
-  const history = useHistory();
   const { menuState, menuDispatch, menuOrder } = useContext(MenuContext);
   const { menu } = menuState;
   
