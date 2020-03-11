@@ -36,7 +36,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'n44ju0$^^b5swfji+1+vq1(ym-505h
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["pinocchios-pizzas.herokuapp.com", "127.0.0.1"]
 
 # Application definition
 
@@ -154,7 +154,7 @@ REST_FRAMEWORK = {
 }
 
 STRIPE_PUBLISHABLE_KEY = 'pk_test_5rN11GjkSP6ayB3NaS4l9EUu00vPNVmQXr'
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 # Heroku: Update database configuration from $DATABASE_URL.
 db_from_env = dj_database_url.config(conn_max_age=500)
