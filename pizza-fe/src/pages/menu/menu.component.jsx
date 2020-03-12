@@ -16,11 +16,8 @@ const MenuPage = () => {
   const { menu } = menuState;
   
   useEffect(() => {
-    Promise.resolve(fetchMenu()).then(menu => menuDispatch({ 
-      type: "SET_MENU", 
-      payload: menuOrder.map(group => menu[group])
-    })
-  )}, []);
+    
+    Promise.resolve(fetchMenu()).then(menu => console.log(menu))}, []);
 
   return (
     <main className="menu-page">
