@@ -16,20 +16,11 @@ const MenuPage = () => {
   const { menu } = menuState;
   
   useEffect(() => {
-    const fetchMenuData = async () => {
-      try {
-        await fetchMenu();
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchMenuData();
-    // Promise.resolve(fetchMenu()).then(menu => menuDispatch({ 
-    //   type: "SET_MENU", 
-    //   payload: menuOrder.map(group => menu[group])
-    // })
-}, []);
+    Promise.resolve(fetchMenu()).then(menu => menuDispatch({ 
+      type: "SET_MENU", 
+      payload: menuOrder.map(group => menu[group])
+    })
+  )}, []);
 
   return (
     <main className="menu-page">
