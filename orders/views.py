@@ -1,6 +1,7 @@
 import stripe
 
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.conf import settings
 from django.contrib.auth.models import User
 
@@ -18,6 +19,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 
 # Create your views here.
+def index(request):
+  return render(request, "index.html")
+
 @api_view()
 @permission_classes([IsAuthenticated])
 def pending_orders(request):
@@ -33,7 +37,6 @@ def pending_orders(request):
 @permission_classes([IsAuthenticated])
 def order(request):
   user = User.objects.get(username=request.user)
-  print(request.user)
   if request.method == 'POST':
     orders = request.data["order"]
 
@@ -109,7 +112,6 @@ def order(request):
 @permission_classes([IsAuthenticated])
 def payment(request):
   user = User.objects.get(username=request.user)
-  print(request.user)
   if request.method == 'POST':
     orders = request.data["order"]
 

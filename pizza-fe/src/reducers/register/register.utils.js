@@ -1,6 +1,6 @@
 import { userHandle } from "../root.utils";
 
 
-export const userRegister = userHandle("register");
+export const userRegister = userHandle("/api/register");
 
-export const validateUsernameAndEmail = userHandle("register/validate");
+export const validateUsernameAndEmail = userHandle("/api/register/validate");

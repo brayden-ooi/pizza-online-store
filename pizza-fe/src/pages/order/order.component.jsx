@@ -11,7 +11,7 @@ import "./order.styles.scss";
 const OrderPage = () => {
   const history = useHistory();
   const [ pendingOrders, setPendingOrders ] = useState(null);
-  const fetchOrders = () => fetch("http://localhost:8000/api/pending_orders", {
+  const fetchOrders = () => fetch("/api/pending_orders", {
     headers: {
       'Authorization': `Token ${window.localStorage.getItem("token")}`
     }

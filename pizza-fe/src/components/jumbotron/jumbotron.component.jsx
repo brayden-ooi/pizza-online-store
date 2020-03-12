@@ -12,7 +12,7 @@ const PizzaJumbotron = () => (
       <h1 className="jumbotron-header text-center">
         50 <span className="jumbotron-mobile-none">‧ </span> 
         <Link to="/menu" className="jumbotron-mobile-none">
-          <img src="logo_small.gif" alt="logo" />
+          <img src="/static/logo_small.gif" alt="logo" />
         </Link>
         <span className="jumbotron-mobile-none"> ‧</span>  years
       </h1>
@@ -31,7 +31,7 @@ const PizzaJumbotron = () => (
         </p>
         <p className="text-center jumbotron-bold-text jumbotron-mobile-none">
           eat ‧ more ‧ pizz
-          <img src="pizza-icon.png" alt="pizza-icon" />
+          <img src="/static/pizza-icon.png" alt="pizza-icon" />
           !
         </p>
       </section>

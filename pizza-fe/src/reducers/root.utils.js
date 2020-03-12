@@ -1,7 +1,5 @@
-export const API_HOST = "http://localhost:8000/api/";
-
 export const userHandle = path => async userCredentials => {
-  const request = await fetch(`${API_HOST}${path}`, {
+  const request = await fetch(path, {
     method: 'POST',
     credentials: 'include',
     headers: {
@@ -28,7 +26,7 @@ export const getCSRFToken = async () => {
       return false;
     });
   } else {
-    const response = await fetch(`${API_HOST}csrf`, {
+    const response = await fetch(`/api/csrf`, {
       credentials: 'include',
     });
     const data = await response.json();

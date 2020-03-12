@@ -19,7 +19,7 @@ const CheckoutPage = () => {
   const handleOrder = async e => {
     e.preventDefault();
 
-    fetch("http://localhost:8000/api/order", {
+    fetch("/api/order", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json',

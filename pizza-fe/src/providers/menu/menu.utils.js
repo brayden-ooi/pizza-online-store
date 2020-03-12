@@ -1,8 +1,8 @@
-import { API_HOST, getCSRFToken } from "../../reducers/root.utils";
+import { getCSRFToken } from "../../reducers/root.utils";
 
 
 export const fetchMenu = () => {
-  return JSON.parse(window.localStorage.getItem("menu")) || fetch(`${API_HOST + "menu/"}`, 
+  return JSON.parse(window.localStorage.getItem("menu")) || fetch("/api/menu", 
   // {
     // mode: 'cors',
     // credentials: 'include',

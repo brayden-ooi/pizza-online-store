@@ -10,7 +10,7 @@ from userdetails.models import UserProfile
 FALLBACK_CUSTOMER_ID = 1
 class Order(models.Model):
   time_ordered = models.DateTimeField(auto_now_add=True)
-  total_price = models.DecimalField(max_digits=4, decimal_places=2)
+  total_price = models.DecimalField(max_digits=8, decimal_places=2)
   customer = models.ForeignKey(UserProfile, related_name='order', on_delete=models.CASCADE, default=FALLBACK_CUSTOMER_ID)
   cooked = models.BooleanField(default=False)
   completed = models.BooleanField(default=False)
@@ -23,8 +23,8 @@ class OrderedFood(models.Model):
   order = models.ForeignKey(Order, on_delete=models.PROTECT, related_name='items_ordered')
   amount = models.PositiveSmallIntegerField(default=1)
   isSmall = models.BooleanField(null=True)
-  itemPrice = models.DecimalField(max_digits=4, decimal_places=2)
-  addOnPrice = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+  itemPrice = models.DecimalField(max_digits=6, decimal_places=2)
+  addOnPrice = models.DecimalField(max_digits=6, decimal_places=2, null=True)
 
   # Grab food from different tablesn
   content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)

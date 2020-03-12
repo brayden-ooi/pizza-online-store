@@ -19,7 +19,6 @@ const RegisterMain = ({ mainPage, validationStatus, formDispatch, setDetailEntry
   const handleChange = (state, event) => correctedPayload("mainPage")(stateUpdate(state, event.target.name, event.target.value));
   const mainHandleChange = event => {
     formDispatch({ type: "FORM_CHANGE", payload: handleChange(mainPage, event) });
-    console.log(handleChange(mainPage, event));
   };
 
   const handleMain = async e => {

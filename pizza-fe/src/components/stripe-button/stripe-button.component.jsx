@@ -8,12 +8,11 @@ import { CartContext } from "../../providers/cart/cart.provider";
 const StripeCheckoutButton = ({ price, cartItems }) => {
   const history = useHistory();
   const { clearCart } = useContext(CartContext);
-  console.log(cartItems);
   const priceForStripe = Math.round(price * 100);
   const publishableKey = 'pk_test_5rN11GjkSP6ayB3NaS4l9EUu00vPNVmQXr';
 
   const onToken = token => {
-    fetch("http://localhost:8000/api/payment", {
+    fetch("/api/payment", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'

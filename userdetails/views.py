@@ -72,12 +72,3 @@ def api_validate(request):
 
 def csrf(request):
 	return JsonResponse({'csrfToken': get_token(request)})
-
-@api_view()
-def user_current_status(request):
-	if request.user.is_authenticated:
-		print(request.user)
-		serializer = UserSerializer(request.user, context={'request': request})
-
-		return Response(serializer.data)
-	return Response(False)

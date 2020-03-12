@@ -9,9 +9,7 @@ import menu.models
 
 
 @api_view()
-def menu_list(request):
-  print(request.user)
-  
+def menu_list(request): 
   try:
     food = {}
     for attr in dir(menu.models):
@@ -32,22 +30,22 @@ def menu_list(request):
   except:
     return Response(status=status.HTTP_404_NOT_FOUND)
 
-@api_view()
-def menu_details(request, food_name):
-  try:
-    food_model_name = unquote(food_name).title().replace(' ', '')
-    food_model = getattr(menu.models, food_model_name)
+# @api_view()
+# def menu_details(request, food_name):
+#   try:
+#     food_model_name = unquote(food_name).title().replace(' ', '')
+#     food_model = getattr(menu.models, food_model_name)
 
-    menu_item = food_model.objects.all()
-    serializer = food_model.get_serializer()
+#     menu_item = food_model.objects.all()
+#     serializer = food_model.get_serializer()
 
-    data = serializer(menu_item, context={'request': request}, many=True)
+#     data = serializer(menu_item, context={'request': request}, many=True)
 
-    food = {}
-    food[food_model_name] = data.data
+#     food = {}
+#     food[food_model_name] = data.data
 
-    return Response(food)
+#     return Response(food)
     
-  except:
-    return Response(status=status.HTTP_404_NOT_FOUND)
+#   except:
+#     return Response(status=status.HTTP_404_NOT_FOUND)
   

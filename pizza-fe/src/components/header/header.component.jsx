@@ -20,11 +20,11 @@ const Header = () => {
     <nav className="header">
       <Navbar expand="md">
         <NavbarBrand href="/">
-          <img src="logo_small.gif" alt="logo" />
+          <img src="/static/logo_small.gif" alt="logo" />
         </NavbarBrand>
         <NavbarToggler className="mr-2" tag={() => 
         <div onClick={toggleNavbar}>
-          <img src="/burger-icon.png" className="header-burger" />
+          <img src="/static/burger-icon.png" className="header-burger" />
         </div>} />
         <Collapse isOpen={!collapsed} navbar>
           <Nav className="mr-auto" navbar>

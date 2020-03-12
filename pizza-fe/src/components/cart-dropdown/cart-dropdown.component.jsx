@@ -23,7 +23,7 @@ const CartDropdown = () => {
         data-toggle="dropdown"
         aria-expanded={dropdownOpen}
       >
-        <img src="cart-icon.png" className="cart-icon" alt="cart" />
+        <img src="/static/cart-icon.png" className="cart-icon" alt="cart" />
       </DropdownToggle>
       <DropdownMenu right>
         <div className="checkout-item">
