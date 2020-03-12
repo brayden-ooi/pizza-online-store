@@ -20,8 +20,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def index(request):
-  return HttpResponse("Hello World!")
-  # render(request, "index.html")
+  return render(request, "index.html")
 
 @api_view()
 @permission_classes([IsAuthenticated])
