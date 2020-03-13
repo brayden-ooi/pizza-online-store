@@ -41,6 +41,10 @@ const CartProvider = ({ children }) => {
     window.localStorage && window.localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
 
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
+
   return (
     <CartContext.Provider
       value={{
