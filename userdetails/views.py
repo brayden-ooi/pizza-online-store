@@ -34,31 +34,26 @@ def api_logout(request):
 
 @api_view(['GET', 'POST'])
 def api_register(request):
-	try:
-		new_user = User()
+	new_user = User.objects.create_user(request.data["mainPage"]["username"], request.data["mainPage"]["email"], request.data["mainPage"]["password"])
 
-		for detail, detail_value in request.data.items():
-			setattr(new_user, detail, detail_value)
+	for detail, detail_value in request.data["detailPage"]["fullName"].items():
+		setattr(new_user, detail, detail_value)
 
-		new_user.save()
+	new_user.save()
+	login(request, new_user)
 
-		new_user_profile = UserProfile.objects.get(user=new_user)
+	new_user_profile = UserProfile.objects.get(user=new_user)
 
-		for detail, detail_value in request.data.items():
-			setattr(new_user_profile, detail, detail_value)
+	for detail, detail_value in request.data["detailPage"]["fullAddress"].items():
+		setattr(new_user_profile, detail, detail_value)
 
-		token = Token.objects.get(user=user)
-		new_user_profile(token=token.key)
+	token = Token.objects.get(user=new_user)
+	setattr(new_user_profile, "token", token.key)
+	new_user_profile.save()
 
-		new_user_profile.save()
+	serializer = UserSerializer(new_user, context={'request': request})
 
-		login(request, new_user)
-		
-		serializer = UserSerializer(new_user, context={'request': request})
-
-		return Response({ "user": serializer.data, "token": token.key }, status=status.HTTP_201_CREATED)
-	except:
-		return Response(serializer.errors, status=status.HTTP_201_CREATED)
+	return Response({ "user": serializer.data, "token": token.key }, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'POST'])
 def api_validate(request):
